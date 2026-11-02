@@ -5,7 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Building2, Handshake, Trophy, Calendar, ArrowRight, UserCircle2 } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext'
 import CTAStrip from '@/components/sections/CTAStrip'
+import HeroBridge from '@/components/sections/HeroBridge'
 import PageTransition from '@/components/ui/PageTransition'
 import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
 import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer'
@@ -31,7 +33,7 @@ const defaultNews: NewsItem[] = [
     readTime: '3 min read',
     title: 'ESC Expands Munich Operations with New Innovation Lab',
     excerpt: 'To support growing European utility partnerships, ESC opens a state-of-the-art innovation lab in Munich focused on Generative AI grid control.',
-    content: `ESC Utility Services is proud to announce the expansion of its European operations with a new state-of-the-art Innovation Lab in Munich, Germany.\n\nThis new facility strengthens our Indo-German technology hub, bringing together specialized software engineers, AI architects, and utility domain experts to build next-generation grid intelligence and IT back-office automation platforms for leading energy and water providers across Europe.\n\n"Expanding our footprint in Munich allows us to collaborate even more closely with European utility leaders while scaling our R&D capabilities across AI, GIS integration, and automated back-office workflows," stated the Board of Directors.`,
+    content: `ESC Utility Services Pvt.Ltd is proud to announce the expansion of its European operations with a new state-of-the-art Innovation Lab in Munich, Germany.\n\nThis new facility strengthens our Indo-German technology hub, bringing together specialized software engineers, AI architects, and utility domain experts to build next-generation grid intelligence and IT back-office automation platforms for leading energy and water providers across Europe.\n\n"Expanding our footprint in Munich allows us to collaborate even more closely with European utility leaders while scaling our R&D capabilities across AI, GIS integration, and automated back-office workflows," stated the Board of Directors.`,
     imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80',
   },
   {
@@ -42,7 +44,7 @@ const defaultNews: NewsItem[] = [
     readTime: '4 min read',
     title: 'ESC Named Top Tech Partner at European Energy Summit',
     excerpt: 'Recognized for outstanding delivery in legacy system modernization and intelligent water utility platform engineering.',
-    content: `ESC Utility Services has been awarded Top Technology Partner of the Year at the 2026 European Energy & Utility Summit held in Frankfurt.\n\nThe distinction recognizes ESC's decade-long commitment to engineering excellence, security-by-design, and continuous digital transformation for energy and water utilities across Germany, Austria, and Switzerland.\n\n"This award highlights the dedication of our dual-continent team in Trivandrum and Düsseldorf. By combining German process standards with agile engineering, we deliver measurable operational efficiency to our utility partners," said the ESC leadership team.`,
+    content: `ESC Utility Services Pvt.Ltd has been awarded Top Technology Partner of the Year at the 2026 European Energy & Utility Summit held in Frankfurt.\n\nThe distinction recognizes ESC's decade-long commitment to engineering excellence, security-by-design, and continuous digital transformation for energy and water utilities across Germany, Austria, and Switzerland.\n\n"This award highlights the dedication of our dual-continent team in Trivandrum and Düsseldorf. By combining German process standards with agile engineering, we deliver measurable operational efficiency to our utility partners," said the ESC leadership team.`,
     imageUrl: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80',
   },
 ]
@@ -56,6 +58,8 @@ const categoryMeta: Record<string, { icon: typeof Building2; color: string }> = 
 }
 
 export default function NewsPage() {
+  const { language } = useLanguage()
+  const isDE = language === 'DE'
   const [newsList, setNewsList] = useState<NewsItem[]>(defaultNews)
 
   useEffect(() => {
@@ -75,62 +79,73 @@ export default function NewsPage() {
 
   return (
     <PageTransition>
-      {/* Hero */}
-      <section className="relative pt-40 pb-32 overflow-hidden min-h-[60vh] flex items-center justify-start text-left bg-black">
-        {/* Prominent Left-Aligned Hero Image — sizing/position matched to the
-            Blog page hero so the ESC-keycap diorama lands in the same spot
-            on both pages. */}
-        <div className="absolute inset-y-0 left-0 w-full lg:w-9/12 pt-12 sm:pt-16 z-0">
+      {/* Silverish Hero Section matching Services & About */}
+      <section className="esc-hero-section relative overflow-hidden flex items-center justify-start text-left bg-[#3b4048]">
+        {/* Original Hero Image in exact original position with lighter silver-grey shade */}
+        <div
+          className="absolute inset-y-0 left-0 w-full lg:w-9/12 pt-12 sm:pt-16 z-0"
+          style={{
+            WebkitMaskImage: 'linear-gradient(to right, black 0%, black 75%, transparent 100%)',
+            maskImage: 'linear-gradient(to right, black 0%, black 75%, transparent 100%)',
+          }}
+        >
           <Image
             src="/images/news.png"
             alt="ESC News"
             fill
             priority
             sizes="100vw"
-            className="object-contain object-left lg:object-[10%_center] opacity-95 filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
+            className="object-contain object-left lg:object-[10%_center] opacity-95 brightness-125 contrast-[0.78]"
             unoptimized={true}
           />
         </div>
 
-        {/* Ambient Gradients - keeping image clear on left, readable text on right */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/50 to-black z-0 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black z-0 pointer-events-none" />
+        {/* Silver-light overlays matching Services, About & Careers */}
+        <div className="absolute inset-0 bg-gradient-to-l from-slate-100 via-slate-100/60 to-slate-200/25 z-0 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-100/30 via-transparent to-slate-100/60 z-0 pointer-events-none" />
 
         {/* Ambient background glow */}
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#962228]/20 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-[#962228]/10 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex justify-end">
-          <div className="max-w-xl lg:max-w-2xl text-right">
+          <div className="max-w-xl sm:max-w-2xl lg:max-w-[46rem] text-right">
             <AnimateOnScroll direction="up">
-              <div className="flex items-center justify-end gap-2 mb-8">
-                <span className="text-sm font-semibold tracking-[0.2em] uppercase text-gray-400 font-outfit">
-                  Latest Updates
+              <div className="flex items-center justify-end gap-2 mb-4 sm:mb-6">
+                <span className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-slate-600 font-outfit">
+                  {isDE ? 'Aktuelle Meldungen' : 'Latest Updates'}
                 </span>
                 <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
               </div>
-              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light text-white mb-8 tracking-tight font-plus-jakarta">
-                Our{' '}
-                <span className="font-extrabold" style={{ color: '#e0575f' }}>
-                  News
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-light text-slate-900 mb-5 sm:mb-7 leading-[1.05] tracking-tight font-plus-jakarta">
+                {isDE ? 'Unsere ' : 'Our '}
+                <span className="font-extrabold" style={{ color: '#962228' }}>
+                  {isDE ? 'Neuigkeiten' : 'News'}
                 </span>
               </h1>
-              <p className="text-gray-300 text-xl sm:text-2xl leading-relaxed font-light mb-12">
-                The latest news, press releases, and corporate announcements from ESC Utility Services.
+              <p className="text-slate-950 text-lg sm:text-xl lg:text-2xl leading-relaxed font-semibold mb-6 sm:mb-10 drop-shadow-sm">
+                {isDE
+                  ? 'Die neuesten Nachrichten, Pressemitteilungen und Unternehmensankündigungen von ESC Utility Services Pvt.Ltd.'
+                  : 'The latest news, press releases, and corporate announcements from ESC Utility Services Pvt.Ltd.'}
               </p>
               
               {/* Scroll down indicator */}
               <motion.div
                 animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="flex flex-col items-end justify-end text-gray-400 mt-16"
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                className="flex flex-col items-end justify-end text-slate-500 mt-6 sm:mt-10"
               >
-                <span className="text-xs uppercase tracking-widest mb-3 font-outfit font-bold">Scroll To Explore</span>
-                <div className="w-[2px] h-12 bg-gradient-to-b from-[#e0575f] to-transparent" />
+                <span className="text-xs uppercase tracking-widest mb-2 sm:mb-3 font-outfit font-bold text-slate-600">
+                  {isDE ? 'Nach unten scrollen' : 'Scroll To Explore'}
+                </span>
+                <div className="w-[2px] h-10 sm:h-12 bg-gradient-to-b from-[#962228] to-transparent" />
               </motion.div>
             </AnimateOnScroll>
           </div>
         </div>
       </section>
+
+      {/* Indo-German Laser Banner Bridge */}
+      <HeroBridge />
 
       {/* News Grid */}
       <section className="bg-slate-50 py-24">
@@ -156,7 +171,7 @@ export default function NewsPage() {
                           {index === 0 && (
                             <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white bg-black/60 backdrop-blur-sm">
                               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                              Latest
+                              {isDE ? 'Aktuell' : 'Latest'}
                             </span>
                           )}
                         </div>
@@ -169,7 +184,7 @@ export default function NewsPage() {
                           {index === 0 && (
                             <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide text-white bg-black/40 backdrop-blur-sm">
                               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                              Latest
+                              {isDE ? 'Aktuell' : 'Latest'}
                             </span>
                           )}
                         </div>
@@ -186,7 +201,7 @@ export default function NewsPage() {
                         </span>
                         <span className="text-xs text-gray-500 flex items-center gap-1 font-medium">
                           <UserCircle2 size={14} />
-                          By ESC Team
+                          {isDE ? 'Vom ESC-Team' : 'By ESC Team'}
                         </span>
                       </div>
 
@@ -207,7 +222,7 @@ export default function NewsPage() {
                             className="inline-flex items-center gap-1 font-bold uppercase tracking-wide group-hover:translate-x-1 transition-transform"
                             style={{ color: meta.color }}
                           >
-                            Read Full Press Release
+                            {isDE ? 'Vollständige Pressemitteilung lesen' : 'Read Full Press Release'}
                             <ArrowRight size={13} />
                           </span>
                         </div>

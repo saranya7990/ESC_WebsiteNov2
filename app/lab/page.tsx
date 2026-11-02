@@ -136,8 +136,10 @@ import StaggerContainer, { StaggerItem } from '@/components/ui/StaggerContainer'
 import PageTransition from '@/components/ui/PageTransition'
 import CTAStrip from '@/components/sections/CTAStrip'
 import HeroBridge from '@/components/sections/HeroBridge'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function LabPage() {
+  const { t, language } = useLanguage()
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
@@ -201,7 +203,7 @@ export default function LabPage() {
         {/* ========================================================= */}
         {/* 1. HERO SECTION (ULTRA-TUNED SILVERISH THEME) */}
         {/* ========================================================= */}
-        <section className="relative pt-40 pb-32 overflow-hidden min-h-[90vh] flex items-center justify-start text-left bg-gradient-to-b from-[#cbd5e1] via-[#f1f5f9] to-[#e2e8f0] border-b border-slate-300/80">
+        <section className="esc-hero-section relative overflow-hidden flex items-center justify-start text-left bg-gradient-to-b from-[#cbd5e1] via-[#f1f5f9] to-[#e2e8f0] border-b border-slate-300/80">
           {/* Parallax Background Metallic Light Reflections & Silver Mesh */}
           <motion.div
             style={{ y: isMobile ? 0 : heroGridY }}
@@ -226,49 +228,51 @@ export default function LabPage() {
           </motion.div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center min-h-[75vh]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-12 items-center">
               
               {/* Left Column — Editorial Typography */}
-              <div className="lg:col-span-7 max-w-3xl text-left space-y-8">
+              <div className="lg:col-span-7 max-w-3xl text-left space-y-3 sm:space-y-5 lg:space-y-6">
                 
                 <AnimateOnScroll direction="up">
                   <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 shadow-sm backdrop-blur-md">
                     <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
                     <span className="text-xs font-bold tracking-[0.25em] uppercase text-[#962228] font-mono">
-                      ESC // AUTOMATION & INNOVATION LAB
+                      {language === 'DE' ? 'Technologie & Innovation' : 'Technology & Innovation'}
                     </span>
                   </div>
                 </AnimateOnScroll>
 
                 <AnimateOnScroll direction="up" delay={0.15}>
-                  <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-slate-950 tracking-tight uppercase leading-[0.95] font-plus-jakarta">
-                    WHERE IDEAS <br />
+                  <h1 className={`${language === 'DE' ? 'text-3xl sm:text-5xl lg:text-5xl xl:text-6xl' : 'text-3xl sm:text-5xl lg:text-6xl xl:text-7xl'} font-black text-slate-950 tracking-tight uppercase leading-[1.0] font-plus-jakarta`}>
+                    {language === 'DE' ? 'WO IDEEN' : 'WHERE IDEAS'} <br />
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
-                      BECOME REAL.
+                      {language === 'DE' ? 'WIRKLICHKEIT WERDEN.' : 'BECOME REAL.'}
                     </span>
                   </h1>
                 </AnimateOnScroll>
 
                 <AnimateOnScroll direction="up" delay={0.25}>
-                  <p className="text-slate-700 text-lg sm:text-xl leading-relaxed font-light max-w-xl border-l-2 border-[#962228] pl-5">
-                    ESC's internal R&D engine — building real AI systems, document intelligence models, and autonomous utility agents that solve complex real-world challenges.
+                  <p className="text-slate-700 text-sm sm:text-base lg:text-lg leading-relaxed font-light max-w-xl border-l-2 border-[#962228] pl-4 sm:pl-5">
+                    {language === 'DE'
+                      ? 'ESCs interne F&E-Schmiede – Entwicklung von KI-Systemen, Dokumentenintelligenz und autonomen Versorger-Agenten für reale Herausforderungen.'
+                      : "ESC's internal R&D engine — building real AI systems, document intelligence models, and autonomous utility agents that solve complex real-world challenges."}
                   </p>
                 </AnimateOnScroll>
 
                 <AnimateOnScroll direction="up" delay={0.35}>
-                  <div className="pt-4 flex flex-wrap items-center gap-8 text-sm font-bold tracking-wider uppercase text-slate-800 font-outfit">
+                  <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-4 sm:gap-6 lg:gap-8 text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-800 font-outfit">
                     <a href="#projects" className="flex items-center gap-2 hover:text-[#962228] transition-colors group">
-                      <span>Explore Projects</span>
+                      <span>{language === 'DE' ? 'Projekte entdecken' : 'Explore Projects'}</span>
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </a>
                     <span className="text-slate-400">|</span>
                     <a href="#case-studies" className="flex items-center gap-2 hover:text-[#962228] transition-colors group">
-                      <span>View Case Studies</span>
+                      <span>{language === 'DE' ? 'Fallstudien ansehen' : 'View Case Studies'}</span>
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </a>
                     <span className="text-slate-400">|</span>
                     <a href="#manifesto" className="flex items-center gap-2 hover:text-[#962228] transition-colors group">
-                      <span>Read Manifesto</span>
+                      <span>{language === 'DE' ? 'Manifest lesen' : 'Read Manifesto'}</span>
                       <span className="group-hover:translate-x-1 transition-transform">→</span>
                     </a>
                   </div>
@@ -282,7 +286,7 @@ export default function LabPage() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1, delay: 0.2 }}
-                  className="w-full h-[400px] sm:h-[460px] relative overflow-hidden rounded-3xl flex items-center justify-center pointer-events-auto shadow-[0_20px_50px_rgba(0,0,0,0.06)] border border-white/80 bg-white/40 backdrop-blur-xl"
+                  className="w-full h-[150px] sm:h-[200px] lg:h-[380px] xl:h-[420px] relative overflow-hidden rounded-3xl flex items-center justify-center pointer-events-auto shadow-[0_20px_50px_rgba(0,0,0,0.06)] border border-white/80 bg-white/40 backdrop-blur-xl"
                 >
                   <div className="w-full h-[130%] absolute -top-[5%] left-0 pointer-events-auto">
                     <SplineRobot />
@@ -311,11 +315,11 @@ export default function LabPage() {
               <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 shadow-sm mb-4 backdrop-blur-md">
                 <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
                 <span className="text-xs font-mono font-bold tracking-[0.25em] uppercase text-[#962228]">
-                  FEATURED WORK & MILESTONES
+                  {language === 'DE' ? 'AUSGEWÄHLTE ARBEITEN & MEILENSTEINE' : 'FEATURED WORK & MILESTONES'}
                 </span>
               </div>
               <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-slate-900 uppercase leading-none font-plus-jakarta">
-                PROJECTS & <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">ACHIEVEMENTS</span>
+                {language === 'DE' ? 'F&E-' : 'R&D '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">{language === 'DE' ? 'PROJEKTE' : 'PROJECTS'}</span>
               </h2>
             </AnimateOnScroll>
 
@@ -333,23 +337,25 @@ export default function LabPage() {
                 <AnimateOnScroll className="relative z-10 p-8 sm:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                   <div className="lg:col-span-7 space-y-6">
                     <div className="flex flex-wrap items-center gap-3 text-xs font-mono tracking-wider text-[#962228] uppercase font-bold">
-                      <span>PROJECT 01 // DEPLOYED · GERMANY</span>
+                      <span>{language === 'DE' ? 'PROJEKT 01 // IM EINSATZ · DEUTSCHLAND' : 'PROJECT 01 // DEPLOYED · GERMANY'}</span>
                     </div>
 
                     <h3 className="text-3xl sm:text-5xl font-black text-slate-950 tracking-tight uppercase leading-none font-plus-jakarta">
-                      Stadtwerke Wülfrath Smart Assistant
+                      {language === 'DE' ? 'Stadtwerke X Smart-Assistent' : 'Stadtwerke X Smart Assistant'}
                     </h3>
 
                     <p className="text-slate-700 leading-relaxed text-base sm:text-lg font-normal">
-                      A natural language assistant for water and gas infrastructure in Wülfrath, Germany. Ask questions in plain language — by typing or voice — and get instant answers, map visualizations, or downloadable spreadsheets.
+                      {language === 'DE'
+                        ? 'Ein natürlichsprachlicher Assistent für Wasser- und Gasinfrastrukturen in Deutschland. Stellen Sie Fragen in einfacher Sprache – per Text oder Spracheingabe – und erhalten Sie sofortige Antworten, Kartenvisualisierungen oder herunterladbare Tabellen.'
+                        : 'A natural language assistant for water and gas infrastructure in Germany. Ask questions in plain language — by typing or voice — and get instant answers, map visualizations, or downloadable spreadsheets.'}
                     </p>
 
                     <div className="grid grid-cols-2 gap-4 pt-2">
                       {[
-                        { icon: Mic, label: 'Voice & Text Input' },
-                        { icon: MapPin, label: 'GIS Map Layers' },
-                        { icon: Zap, label: 'Spreadsheet Export' },
-                        { icon: Cpu, label: 'Telemetry Dashboard' },
+                        { icon: Mic, label: language === 'DE' ? 'Sprach- & Texteingabe' : 'Voice & Text Input' },
+                        { icon: MapPin, label: language === 'DE' ? 'GIS-Kartenebenen' : 'GIS Map Layers' },
+                        { icon: Zap, label: language === 'DE' ? 'Tabellen-Export' : 'Spreadsheet Export' },
+                        { icon: Cpu, label: language === 'DE' ? 'Telemetrie-Dashboard' : 'Telemetry Dashboard' },
                       ].map((item, i) => (
                         <div key={i} className="flex items-center gap-3 text-sm text-slate-800 font-semibold">
                           <div className="w-2.5 h-2.5 rounded-full bg-[#962228]" />
@@ -362,22 +368,22 @@ export default function LabPage() {
                   <div className="lg:col-span-5 flex justify-center">
                     <div className="w-full h-64 sm:h-72 rounded-2xl bg-slate-950 border border-slate-800 p-6 relative overflow-hidden flex flex-col justify-between shadow-2xl text-white">
                       <div className="flex items-center justify-between text-xs font-mono text-gray-400 border-b border-slate-800 pb-3">
-                        <span className="text-white font-semibold">GIS QUERY ENGINE</span>
-                        <span className="text-[#e0575f]">GERMANY DE</span>
+                        <span className="text-white font-semibold">{language === 'DE' ? 'GIS-ABFRAGE-ENGINE' : 'GIS QUERY ENGINE'}</span>
+                        <span className="text-[#e0575f]">{language === 'DE' ? 'DEUTSCHLAND DE' : 'GERMANY DE'}</span>
                       </div>
                       
                       <div className="my-auto space-y-3 font-mono text-xs">
                         <div className="p-3 rounded-lg bg-slate-900 text-gray-300 border border-slate-800">
-                          <span className="text-gray-500">&gt; VOICE QUERY:</span> "Show water main inspection status in Zone 4"
+                          <span className="text-gray-500">{language === 'DE' ? '> SPRACHABFRAGE:' : '> VOICE QUERY:'}</span> {language === 'DE' ? '"Zeige Inspektionsstatus der Hauptwasserleitung in Zone 4"' : '"Show water main inspection status in Zone 4"'}
                         </div>
                         <div className="p-3 rounded-lg bg-slate-900 border border-[#962228]/60 text-red-300">
-                          <span className="text-emerald-400">✓ AI OUTPUT:</span> Rendered 14 telemetry nodes.
+                          <span className="text-emerald-400">{language === 'DE' ? '✓ KI-AUSGABE:' : '✓ AI OUTPUT:'}</span> {language === 'DE' ? '14 Telemetrieknoten gerendert.' : 'Rendered 14 telemetry nodes.'}
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between text-[11px] font-mono text-gray-400 pt-2 border-t border-slate-800">
-                        <span>Status: Operational</span>
-                        <span className="text-emerald-400 font-semibold">PRODUCTION LIVE</span>
+                        <span>{language === 'DE' ? 'Status: Betriebsbereit' : 'Status: Operational'}</span>
+                        <span className="text-emerald-400 font-semibold">{language === 'DE' ? 'PRODUKTIV LIVE' : 'PRODUCTION LIVE'}</span>
                       </div>
                     </div>
                   </div>
@@ -397,23 +403,25 @@ export default function LabPage() {
                 <AnimateOnScroll className="relative z-10 p-8 sm:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                   <div className="lg:col-span-7 space-y-6">
                     <div className="flex flex-wrap items-center gap-3 text-xs font-mono tracking-wider text-[#962228] uppercase font-bold">
-                      <span>PROJECT 02 // HACKATHON WINNER · AGENTIC AI</span>
+                      <span>{language === 'DE' ? 'PROJEKT 02 // HACKATHON · AGENTISCHE KI' : 'PROJECT 02 // HACKATHON · AGENTIC AI'}</span>
                     </div>
 
                     <h3 className="text-3xl sm:text-5xl font-black text-slate-950 tracking-tight uppercase leading-none font-plus-jakarta">
-                      Community Connect — AI for Society
+                      {language === 'DE' ? 'Community Connect — KI für die Gesellschaft' : 'Community Connect — AI for Society'}
                     </h3>
 
                     <p className="text-slate-700 leading-relaxed text-base sm:text-lg font-normal">
-                      Built at a Generative AI & Agentic AI Hackathon. An AI-powered platform that connects local community members with skilled household workers nearby — increasing community work rates and local economic stability.
+                      {language === 'DE'
+                        ? 'Entwickelt bei einem Generative-AI- & Agentic-AI-Hackathon. Eine KI-gestützte Plattform, die Anwohner mit qualifizierten Haushaltskräften in der Nähe vernetzt – zur Förderung lokaler Beschäftigung und wirtschaftlicher Stabilität.'
+                        : 'Built at a Generative AI & Agentic AI Hackathon. An AI-powered platform that connects local community members with skilled household workers nearby — increasing community work rates and local economic stability.'}
                     </p>
 
                     <div className="grid grid-cols-2 gap-4 pt-2">
                       {[
-                        { icon: Bot, label: 'Agentic Workflows' },
-                        { icon: Network, label: 'Community Matching' },
-                        { icon: MapPin, label: 'Worker Discovery' },
-                        { icon: Cpu, label: 'Impact Analytics' },
+                        { icon: Bot, label: language === 'DE' ? 'Agentische Workflows' : 'Agentic Workflows' },
+                        { icon: Network, label: language === 'DE' ? 'Community-Matching' : 'Community Matching' },
+                        { icon: MapPin, label: language === 'DE' ? 'Fachkräfte-Suche' : 'Worker Discovery' },
+                        { icon: Cpu, label: language === 'DE' ? 'Wirkungsanalyse' : 'Impact Analytics' },
                       ].map((item, i) => (
                         <div key={i} className="flex items-center gap-3 text-sm text-slate-800 font-semibold">
                           <div className="w-2.5 h-2.5 rounded-full bg-[#962228]" />
@@ -426,8 +434,8 @@ export default function LabPage() {
                   <div className="lg:col-span-5 flex justify-center">
                     <div className="w-full h-64 sm:h-72 rounded-2xl bg-slate-950 border border-slate-800 p-6 relative overflow-hidden flex flex-col justify-between shadow-2xl text-white">
                       <div className="flex items-center justify-between text-xs font-mono text-gray-400 border-b border-slate-800 pb-3">
-                        <span className="text-white font-semibold">AGENT NODE GRAPH</span>
-                        <span className="text-[#e0575f]">MATCH ENGINE</span>
+                        <span className="text-white font-semibold">{language === 'DE' ? 'AGENTEN-KNOTENGRAPH' : 'AGENT NODE GRAPH'}</span>
+                        <span className="text-[#e0575f]">{language === 'DE' ? 'MATCHING-ENGINE' : 'MATCH ENGINE'}</span>
                       </div>
                       
                       <div className="relative my-auto h-28 flex items-center justify-center">
@@ -435,16 +443,16 @@ export default function LabPage() {
                           <Bot size={22} />
                         </div>
                         <div className="absolute left-2 top-2 px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-[10px] font-mono text-gray-300">
-                          Resident Request
+                          {language === 'DE' ? 'Anwohner-Anfrage' : 'Resident Request'}
                         </div>
                         <div className="absolute right-2 bottom-2 px-2.5 py-1 rounded bg-slate-900 border border-emerald-800 text-[10px] font-mono text-emerald-400">
-                          Worker Matched (98%)
+                          {language === 'DE' ? 'Fachkraft gefunden (98%)' : 'Worker Matched (98%)'}
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between text-[11px] font-mono text-gray-400 pt-2 border-t border-slate-800">
-                        <span>Agent Routing: Active</span>
-                        <span className="text-[#e0575f] font-semibold">AWARD BUILD</span>
+                        <span>{language === 'DE' ? 'Agenten-Routing: Aktiv' : 'Agent Routing: Active'}</span>
+                        <span className="text-[#e0575f] font-semibold">{language === 'DE' ? 'Hackathon-Projekt' : 'Hackathon Build'}</span>
                       </div>
                     </div>
                   </div>
@@ -464,23 +472,25 @@ export default function LabPage() {
                 <AnimateOnScroll className="relative z-10 p-8 sm:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                   <div className="lg:col-span-7 space-y-6">
                     <div className="flex flex-wrap items-center gap-3 text-xs font-mono tracking-wider text-[#962228] uppercase font-bold">
-                      <span>PROJECT 03 // INTERNAL PLATFORM · RAG ENGINE</span>
+                      <span>{language === 'DE' ? 'PROJEKT 03 // INTERNE PLATTFORM · RAG-ENGINE' : 'PROJECT 03 // INTERNAL PLATFORM · RAG ENGINE'}</span>
                     </div>
 
                     <h3 className="text-3xl sm:text-5xl font-black text-slate-950 tracking-tight uppercase leading-none font-plus-jakarta">
-                      IDA — Intelligent Document AI
+                      {language === 'DE' ? 'IDA — Intelligente Dokumenten-KI' : 'IDA — Intelligent Document AI'}
                     </h3>
 
                     <p className="text-slate-700 leading-relaxed text-base sm:text-lg font-normal">
-                      An internal AI platform that lets employees upload thousands of company documents (PDFs, Word files, scanned images) and ask questions in plain language. Every answer includes precise page references back to the exact source using a private vector database.
+                      {language === 'DE'
+                        ? 'Eine interne KI-Plattform, mit der Mitarbeitende tausende Unternehmensdokumente (PDFs, Word-Dateien, gescannte Bilder) hochladen und Fragen in natürlicher Sprache stellen können. Jede Antwort enthält präzise Seitenverweise auf die Originalquelle über eine private Vektordatenbank.'
+                        : 'An internal AI platform that lets employees upload thousands of company documents (PDFs, Word files, scanned images) and ask questions in plain language. Every answer includes precise page references back to the exact source using a private vector database.'}
                     </p>
 
                     <div className="grid grid-cols-2 gap-4 pt-2">
                       {[
-                        { icon: FileSearch, label: 'Multi-Format Ingestion' },
-                        { icon: Database, label: 'Vector Search (RAG)' },
-                        { icon: CheckCircle2, label: 'Exact Page Citations' },
-                        { icon: ShieldCheck, label: 'Private Enterprise Corpus' },
+                        { icon: FileSearch, label: language === 'DE' ? 'Multi-Format-Erfassung' : 'Multi-Format Ingestion' },
+                        { icon: Database, label: language === 'DE' ? 'Vektorsuche (RAG)' : 'Vector Search (RAG)' },
+                        { icon: CheckCircle2, label: language === 'DE' ? 'Exakte Seitenzitate' : 'Exact Page Citations' },
+                        { icon: ShieldCheck, label: language === 'DE' ? 'Privater Wissenskorpus' : 'Private Enterprise Corpus' },
                       ].map((item, i) => (
                         <div key={i} className="flex items-center gap-3 text-sm text-slate-800 font-semibold">
                           <div className="w-2.5 h-2.5 rounded-full bg-[#962228]" />
@@ -493,24 +503,24 @@ export default function LabPage() {
                   <div className="lg:col-span-5 flex justify-center">
                     <div className="w-full h-64 sm:h-72 rounded-2xl bg-slate-950 border border-slate-800 p-6 relative overflow-hidden flex flex-col justify-between shadow-2xl text-white">
                       <div className="flex items-center justify-between text-xs font-mono text-gray-400 border-b border-slate-800 pb-3">
-                        <span className="text-white font-semibold">VECTOR EMBEDDINGS</span>
-                        <span className="text-[#e0575f]">48,210 DOCS</span>
+                        <span className="text-white font-semibold">{language === 'DE' ? 'VEKTOR-EMBEDDINGS' : 'VECTOR EMBEDDINGS'}</span>
+                        <span className="text-[#e0575f]">{language === 'DE' ? '48.210 DOKS' : '48,210 DOCS'}</span>
                       </div>
                       
                       <div className="my-auto space-y-2.5 font-mono text-xs">
                         <div className="p-2.5 rounded bg-slate-900 text-gray-300 flex items-center justify-between border border-slate-800">
                           <span className="truncate">DIN_EN_12201_Standard.pdf</span>
-                          <span className="text-[10px] text-emerald-400 ml-2">Cited p.42</span>
+                          <span className="text-[10px] text-emerald-400 ml-2">{language === 'DE' ? 'Zitiert S.42' : 'Cited p.42'}</span>
                         </div>
                         <div className="p-2.5 rounded bg-slate-900 text-gray-300 flex items-center justify-between border border-slate-800">
                           <span className="truncate">Maintenance_Log_2025.docx</span>
-                          <span className="text-[10px] text-emerald-400 ml-2">Cited p.118</span>
+                          <span className="text-[10px] text-emerald-400 ml-2">{language === 'DE' ? 'Zitiert S.118' : 'Cited p.118'}</span>
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between text-[11px] font-mono text-gray-400 pt-2 border-t border-slate-800">
-                        <span>Zero Hallucinations</span>
-                        <span className="text-purple-400 font-semibold">ENTERPRISE RAG</span>
+                        <span>{language === 'DE' ? 'Keine Halluzinationen' : 'Zero Hallucinations'}</span>
+                        <span className="text-purple-400 font-semibold">{language === 'DE' ? 'ENTERPRISE-RAG' : 'ENTERPRISE RAG'}</span>
                       </div>
                     </div>
                   </div>
@@ -533,12 +543,6 @@ export default function LabPage() {
           <div className="max-w-7xl mx-auto relative z-10">
 
             <AnimateOnScroll className="mb-20 text-left">
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 shadow-sm mb-4 backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
-                <span className="text-xs font-mono font-bold tracking-[0.25em] uppercase text-[#962228]">
-                  PROVEN IN PRODUCTION
-                </span>
-              </div>
               <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-slate-900 uppercase leading-none font-plus-jakarta">
                 CASE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">STUDIES</span>
               </h2>
@@ -602,44 +606,56 @@ export default function LabPage() {
               <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 shadow-sm mb-4 backdrop-blur-md">
                 <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
                 <span className="text-xs font-mono font-bold tracking-[0.25em] uppercase text-[#962228]">
-                  CORE TECH CAPABILITIES
+                  {language === 'DE' ? 'TECHNOLOGISCHE KERNKOMPETENZEN' : 'CORE TECH CAPABILITIES'}
                 </span>
               </div>
               <h2 className="text-4xl sm:text-6xl font-black tracking-tight text-slate-900 uppercase leading-none font-plus-jakarta">
-                WHAT WE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">BUILD WITH</span>
+                {language === 'DE' ? 'WOMIT WIR ' : 'WHAT WE '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">{language === 'DE' ? 'ENTWICKELN' : 'BUILD WITH'}</span>
               </h2>
             </AnimateOnScroll>
 
             <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
                 {
-                  title: 'Agentic AI Systems',
-                  desc: 'Autonomous multi-agent workflows capable of decision-making, task decomposition, and tools orchestration.',
+                  title: language === 'DE' ? 'Agentische KI-Systeme' : 'Agentic AI Systems',
+                  desc: language === 'DE'
+                    ? 'Autonome Multi-Agenten-Workflows für Entscheidungsfindung, Aufgabenzerlegung und Tool-Orchestrierung.'
+                    : 'Autonomous multi-agent workflows capable of decision-making, task decomposition, and tools orchestration.',
                   icon: Bot,
                 },
                 {
-                  title: 'RAG & Document Intelligence',
-                  desc: 'Enterprise vector retrieval pipelines with strict citation mapping and zero external data leaks.',
+                  title: language === 'DE' ? 'RAG & Dokumentenintelligenz' : 'RAG & Document Intelligence',
+                  desc: language === 'DE'
+                    ? 'Enterprise-Vektorsuchpipelines mit präziser Quellenangabe und ohne externe Datenabflüsse.'
+                    : 'Enterprise vector retrieval pipelines with strict citation mapping and zero external data leaks.',
                   icon: Database,
                 },
                 {
-                  title: 'Voice & NLP Interfaces',
-                  desc: 'Natural language understanding in multiple dialects, real-time voice synthesis, and speech-to-intent.',
+                  title: language === 'DE' ? 'Sprach- & NLP-Schnittstellen' : 'Voice & NLP Interfaces',
+                  desc: language === 'DE'
+                    ? 'Natürlichsprachliches Verstehen in verschiedenen Dialekten, Echtzeit-Sprachsynthese und Speech-to-Intent.'
+                    : 'Natural language understanding in multiple dialects, real-time voice synthesis, and speech-to-intent.',
                   icon: Mic,
                 },
                 {
-                  title: 'Geospatial Visualization',
-                  desc: 'Interactive map engines overlaying AI insights onto GIS vector layers for infrastructure planning.',
+                  title: language === 'DE' ? 'Geodaten-Visualisierung' : 'Geospatial Visualization',
+                  desc: language === 'DE'
+                    ? 'Interaktive Karten-Engines, die KI-Erkenntnisse mit GIS-Vektorebenen für die Infrastrukturplanung verknüpfen.'
+                    : 'Interactive map engines overlaying AI insights onto GIS vector layers for infrastructure planning.',
                   icon: MapPin,
                 },
                 {
-                  title: 'LLM Fine-Tuning',
-                  desc: 'Domain-adapted language models trained on domain terminology and municipal compliance rules.',
+                  title: language === 'DE' ? 'LLM-Feinabstimmung' : 'LLM Fine-Tuning',
+                  desc: language === 'DE'
+                    ? 'Domänenspezifisch angepasste Sprachmodelle, trainiert auf Fachvokabular und kommunale Compliance-Vorgaben.'
+                    : 'Domain-adapted language models trained on domain terminology and municipal compliance rules.',
                   icon: Layers,
                 },
                 {
-                  title: 'Intelligent Automation',
-                  desc: 'End-to-end integration connecting legacy utility databases directly to modern neural execution layers.',
+                  title: language === 'DE' ? 'Intelligente Automatisierung' : 'Intelligent Automation',
+                  desc: language === 'DE'
+                    ? 'Durchgängige Integration zur direkten Anbindung bestehender Versorgerdatenbanken an moderne KI-Ausführungsschichten.'
+                    : 'End-to-end integration connecting legacy utility databases directly to modern neural execution layers.',
                   icon: Zap,
                 },
               ].map((cap, i) => (
@@ -678,29 +694,31 @@ export default function LabPage() {
               <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 shadow-sm mb-4 backdrop-blur-md">
                 <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
                 <span className="text-xs font-mono font-bold tracking-[0.3em] uppercase text-[#962228]">
-                  // THE LAB MANIFESTO
+                  {language === 'DE' ? '// DAS LAB-MANIFEST' : '// THE LAB MANIFESTO'}
                 </span>
               </div>
               
               <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-slate-950 uppercase font-plus-jakarta leading-none">
-                WE DON&apos;T CONSULT.<br />
+                {language === 'DE' ? 'VON DER IDEE' : 'FROM IDEAS'}<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
-                  WE BUILD.
+                  {language === 'DE' ? 'ZUR UMSETZUNG' : 'TO IMPLEMENTATION'}
                 </span>
               </h2>
             </AnimateOnScroll>
 
             <AnimateOnScroll delay={0.2} direction="up">
               <p className="text-xl sm:text-3xl text-slate-800 font-medium max-w-3xl mx-auto leading-relaxed border-t border-b border-slate-300/80 py-10 my-8">
-                "Every project in this lab started as a problem worth solving. We pick up the hard ones."
+                {language === 'DE'
+                  ? '„Jedes Projekt in diesem Lab begann als ein Problem, das es wert war, gelöst zu werden. Wir widmen uns den anspruchsvollen Aufgaben.“'
+                  : '"Every project in this lab started as a problem worth solving. We pick up the hard ones."'}
               </p>
             </AnimateOnScroll>
 
             <AnimateOnScroll delay={0.4} direction="up">
               <div className="flex flex-wrap items-center justify-center gap-8 font-mono text-xs text-slate-700 font-bold tracking-widest uppercase">
-                <span>// ZERO SLIDES</span>
-                <span>// PRODUCTION CODE ONLY</span>
-                <span>// REAL IMPACT</span>
+                <span>{language === 'DE' ? '// KEINE FOLIEN' : '// ZERO SLIDES'}</span>
+                <span>{language === 'DE' ? '// NUR PRODUKTIVER CODE' : '// PRODUCTION CODE ONLY'}</span>
+                <span>{language === 'DE' ? '// ECHTE WIRKUNG' : '// REAL IMPACT'}</span>
               </div>
             </AnimateOnScroll>
           </div>
@@ -715,15 +733,15 @@ export default function LabPage() {
             <AnimateOnScroll className="space-y-6">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 text-xs font-mono font-bold text-[#962228] shadow-sm backdrop-blur-md">
                 <Cpu size={13} />
-                <span>OPEN R&D INITIATIVES</span>
+                <span>{language === 'DE' ? 'OFFENE F&E-INITIATIVEN' : 'OPEN R&D INITIATIVES'}</span>
               </div>
 
               <h2 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-950 uppercase font-plus-jakarta">
-                Have an idea worth building?
+                {language === 'DE' ? 'Haben Sie ein Projekt für uns?' : 'Have an idea worth building?'}
               </h2>
 
               <p className="text-xl text-slate-700 font-normal max-w-xl mx-auto leading-relaxed">
-                Bring it to the Lab.
+                {language === 'DE' ? 'Bringen Sie es ins Lab.' : 'Bring it to the Lab.'}
               </p>
 
               <div className="pt-6">
@@ -731,7 +749,7 @@ export default function LabPage() {
                   href="/contact"
                   className="inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-semibold text-white rounded-2xl transition-all duration-300 bg-gradient-to-r from-[#962228] to-[#b82830] hover:from-[#7a1b20] hover:to-[#962228] shadow-lg shadow-[#962228]/25 hover:shadow-xl hover:shadow-[#962228]/35 hover:scale-[1.02] active:scale-[0.98] font-outfit"
                 >
-                  <span>Start a Conversation</span>
+                  <span>{language === 'DE' ? 'Gespräch beginnen' : 'Start a Conversation'}</span>
                   <ArrowUpRight size={18} />
                 </Link>
               </div>

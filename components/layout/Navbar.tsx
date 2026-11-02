@@ -4,43 +4,10 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X, ChevronDown, Phone, Mail, MapPin, Search } from 'lucide-react'
-
-const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'About', href: '/about' },
-  { label: 'Services', href: '/services' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'Lab', href: '/lab', isSpecial: true },
-  {
-    label: 'Insights',
-    href: '#',
-    children: [
-      { label: 'Blog', href: '/blog' },
-      { label: 'News', href: '/news' },
-    ],
-  },
-  { label: 'Contact', href: '/contact' },
-]
-
-const searchablePages = [
-  { title: 'Home Page', href: '/', category: 'Navigation', desc: 'Main landing page and overview' },
-  { title: 'About Us', href: '/about', category: 'Company', desc: 'Company vision, leadership, and Indo-German roots' },
-  { title: 'Software Engineering', href: '/services', category: 'Services', desc: 'Custom application & SCADA development' },
-  { title: 'Generative AI', href: '/services', category: 'Services', desc: 'LLM integration, predictive models & automation' },
-  { title: 'Intelligent Automation', href: '/services', category: 'Services', desc: 'RPA and workflow automation' },
-  { title: 'IT Back-Office Services', href: '/services', category: 'Services', desc: 'Infrastructure, helpdesk & operations' },
-  { title: 'Market Research & Analysis', href: '/services', category: 'Services', desc: 'Business intelligence & data validation' },
-  { title: 'Careers & Jobs', href: '/careers', category: 'Company', desc: 'Open positions and working culture' },
-  { title: 'ESC Innovation Lab', href: '/lab', category: 'Innovation', desc: 'AI agentic sandbox & demos' },
-  { title: 'Blog & Articles', href: '/blog', category: 'Insights', desc: 'Latest technological insights' },
-  { title: 'News & Announcements', href: '/news', category: 'Insights', desc: 'Press releases and company updates' },
-  { title: 'Contact Us', href: '/contact', category: 'Support', desc: 'Get in touch with our team' },
-  { title: 'Imprint / Legal', href: '/imprint', category: 'Legal', desc: 'Corporate registration & legal information' },
-  { title: 'Data Protection', href: '/data-protection', category: 'Legal', desc: 'Privacy policy and GDPR compliance' },
-  { title: 'ISO 27001 Certification', href: '/certifications', category: 'Compliance', desc: 'ISO/IEC 27001:2022 Information Security Certification' },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function Navbar() {
+  const { language, setLanguage, t } = useLanguage()
   const [menuOpen, setMenuOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -48,6 +15,15 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('')
   const pathname = usePathname()
   const router = useRouter()
+
+  // Consistent maroon header and rectangular active highlight across all pages
+  const topIconClass = 'text-red-300'
+  const topIconAltClass = 'text-red-200'
+  const activeLangTextClass = 'text-[#801c21]'
+  const activeNavClass = 'font-bold text-[#962228] bg-red-50/90 border-b-2 border-[#962228] shadow-xs'
+  const inactiveNavClass = 'font-medium text-gray-700 hover:text-[#962228] hover:bg-red-50'
+  const labDotClass = 'bg-[#B52B35]'
+  const labDotGlowClass = 'shadow-[0_0_8px_rgba(181,43,53,0.6)]'
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20)
@@ -64,6 +40,40 @@ export default function Navbar() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
+  const navLinks = [
+    { label: t.nav.home, href: '/' },
+    { label: t.nav.about, href: '/about' },
+    { label: t.nav.services, href: '/services' },
+    { label: t.nav.careers, href: '/careers' },
+    { label: t.nav.lab, href: '/lab', isSpecial: true },
+    {
+      label: t.nav.insights,
+      href: '#',
+      children: [
+        { label: t.nav.blog, href: '/blog' },
+        { label: t.nav.news, href: '/news' },
+      ],
+    },
+    { label: t.nav.contact, href: '/contact' },
+  ]
+
+  const searchablePages = [
+    { title: t.nav.home, href: '/', category: 'Navigation', desc: language === 'DE' ? 'Haupt-Startseite und Überblick' : 'Main landing page and overview' },
+    { title: t.nav.about, href: '/about', category: 'Company', desc: language === 'DE' ? 'Unternehmensvision, Führung und deutsch-indische Wurzeln' : 'Company vision, leadership, and Indo-German roots' },
+    { title: language === 'DE' ? 'Software-Engineering' : 'Software Engineering', href: '/services', category: 'Services', desc: language === 'DE' ? 'Individuelle Anwendungen & SCADA-Entwicklung' : 'Custom application & SCADA development' },
+    { title: language === 'DE' ? 'Prozessautomatisierung' : 'Intelligent Automation', href: '/services', category: 'Services', desc: language === 'DE' ? 'RPA und automatisierte Workflows' : 'RPA and workflow automation' },
+    { title: language === 'DE' ? 'IT-Back-Office-Dienste' : 'IT Back-Office Services', href: '/services', category: 'Services', desc: language === 'DE' ? 'Infrastruktur, Support & Betrieb' : 'Infrastructure, helpdesk & operations' },
+    { title: language === 'DE' ? 'Marktforschung & Analyse' : 'Market Research & Analysis', href: '/services', category: 'Services', desc: language === 'DE' ? 'Business Intelligence & Datenprüfung' : 'Business intelligence & data validation' },
+    { title: t.nav.careers, href: '/careers', category: 'Company', desc: language === 'DE' ? 'Offene Stellen und Arbeitskultur' : 'Open positions and working culture' },
+    { title: t.nav.lab, href: '/lab', category: 'Innovation', desc: language === 'DE' ? 'KI-Agenten und Demos' : 'AI agentic sandbox & demos' },
+    { title: t.nav.blog, href: '/blog', category: 'Insights', desc: language === 'DE' ? 'Aktuelle technologische Erkenntnisse' : 'Latest technological insights' },
+    { title: t.nav.news, href: '/news', category: 'Insights', desc: language === 'DE' ? 'Pressemitteilungen und Neuigkeiten' : 'Press releases and company updates' },
+    { title: t.nav.contact, href: '/contact', category: 'Support', desc: language === 'DE' ? 'Kontaktieren Sie unser Team' : 'Get in touch with our team' },
+    { title: t.footer.imprint, href: '/imprint', category: 'Legal', desc: language === 'DE' ? 'Impressum und rechtliche Hinweise' : 'Corporate registration & legal information' },
+    { title: t.footer.dataProtection, href: '/data-protection', category: 'Legal', desc: language === 'DE' ? 'Datenschutzerklärung und DSGVO-Compliance' : 'Privacy policy and GDPR compliance' },
+    { title: t.footer.certifications, href: '/certifications', category: 'Compliance', desc: language === 'DE' ? 'ISO/IEC 27001:2022 Informationssicherheit' : 'ISO/IEC 27001:2022 Information Security Certification' },
+  ]
+
   const filteredSearchResults = searchQuery.trim() === ''
     ? searchablePages.slice(0, 6)
     : searchablePages.filter(p =>
@@ -75,18 +85,14 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-          scrolled ? 'bg-white shadow-md' : 'bg-white/95 backdrop-blur-sm'
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-slate-200 ${
+          scrolled ? 'bg-[#F3F4F6] shadow-md' : 'bg-[#F3F4F6]/95 backdrop-blur-md shadow-sm'
         }`}
       >
         {/* ========================================================================= */}
-        {/* TOP PRE-HEADER BANNER (Collapses / Disappears on Scroll) */}
+        {/* TOP PRE-HEADER BANNER (Consistently Visible with Language Switcher) */}
         {/* ========================================================================= */}
-        <div
-          className={`bg-[#801c21] text-white/90 border-b border-red-950/30 transition-all duration-300 ease-in-out overflow-hidden ${
-            scrolled ? 'max-h-0 opacity-0 py-0 border-none' : 'max-h-12 opacity-100 py-1.5'
-          }`}
-        >
+        <div className="text-white/90 transition-all duration-300 py-1.5 bg-[#801c21] border-b border-red-950/30">
           <div className="w-full px-3 sm:px-5 lg:px-6 flex items-center justify-between text-xs font-medium">
             
             {/* Left Info: Contact Phone, Email & Address aligned closer to far left */}
@@ -95,34 +101,69 @@ export default function Navbar() {
                 href="tel:+918086228000"
                 className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap"
               >
-                <Phone size={12} className="text-red-300" />
+                <Phone size={12} className={topIconClass} />
                 <span>+91 8086 22 8000</span>
               </a>
 
               <a
                 href="mailto:info@esc-ind.com"
-                className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap"
+                className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap hidden sm:flex"
               >
-                <Mail size={12} className="text-red-300" />
+                <Mail size={12} className={topIconClass} />
                 <span>info@esc-ind.com</span>
               </a>
 
-              <span className="flex items-center gap-1.5 text-white/90 whitespace-nowrap">
-                <MapPin size={12} className="text-red-300" />
+              <span className="items-center gap-1.5 text-white/90 whitespace-nowrap hidden lg:flex">
+                <MapPin size={12} className={topIconClass} />
                 <span>Yamuna Building, Technopark Phase 3 campus, Trivandrum</span>
               </span>
             </div>
 
-            {/* Right Action Icons: Quick Search & Social */}
-            <div className="flex items-center gap-3 sm:gap-4 pl-3 border-l border-white/20">
+            {/* Right Action Icons: Language Selector, Quick Search & Social */}
+            <div className="flex items-center gap-2 sm:gap-4 pl-2 sm:pl-3 border-l border-white/20 shrink-0">
+              
+              {/* EN / DE Language Toggle Pill */}
+              <div
+                className="flex items-center bg-black/35 rounded-full p-0.5 border border-white/25 text-xs font-semibold shadow-inner"
+                role="group"
+                aria-label="Language Selector"
+              >
+                <button
+                  type="button"
+                  onClick={() => setLanguage('EN')}
+                  className={`px-2.5 py-0.5 rounded-full transition-all duration-200 text-[11px] font-bold ${
+                    language === 'EN'
+                      ? `bg-white ${activeLangTextClass} shadow-md scale-100`
+                      : 'text-white/80 hover:text-white hover:bg-white/10'
+                  }`}
+                  aria-label="Switch language to English"
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLanguage('DE')}
+                  className={`px-2.5 py-0.5 rounded-full transition-all duration-200 text-[11px] font-bold ${
+                    language === 'DE'
+                      ? `bg-white ${activeLangTextClass} shadow-md scale-100`
+                      : 'text-white/80 hover:text-white hover:bg-white/10'
+                  }`}
+                  aria-label="Sprache auf Deutsch umstellen"
+                >
+                  DE
+                </button>
+              </div>
+
               <button
                 onClick={() => setSearchOpen(true)}
                 className="flex items-center gap-1.5 hover:text-white transition-colors p-1 rounded hover:bg-white/10"
-                title="Search site"
-                aria-label="Search site"
+                title={t.nav.search}
+                aria-label={t.nav.search}
               >
-                <Search size={13} className="text-red-200" />
-                <span className="hidden lg:inline text-[11px] uppercase tracking-wider font-semibold">Search</span>
+                <Search size={13} className={topIconAltClass} />
+                <span className="hidden sm:inline text-[11px] uppercase tracking-wider font-semibold">
+                  {t.nav.search}
+                </span>
               </button>
 
               <a
@@ -133,7 +174,7 @@ export default function Navbar() {
                 title="LinkedIn"
                 aria-label="LinkedIn Profile"
               >
-                <svg className="w-3.5 h-3.5 fill-current text-red-200" viewBox="0 0 24 24">
+                <svg className={`w-3.5 h-3.5 fill-current ${topIconAltClass}`} viewBox="0 0 24 24">
                   <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.7a1.63 1.63 0 1 0 1.63 1.63A1.63 1.63 0 0 0 7.86 6.7z"/>
                 </svg>
               </a>
@@ -148,7 +189,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
 
-            {/* Logo (Non-navigating display) */}
+            {/* Logo */}
             <div className="flex items-center gap-2 group cursor-default">
               <div
                 className="w-9 h-9 rounded flex items-center justify-center text-white font-bold text-sm tracking-tight"
@@ -158,10 +199,7 @@ export default function Navbar() {
               </div>
               <div className="leading-tight">
                 <span className="block text-sm font-bold text-gray-900 tracking-tight whitespace-nowrap">
-                  ESC Utility Services Pvt. Ltd
-                </span>
-                <span className="block text-[10px] text-gray-500 tracking-widest uppercase">
-                  Indo-German Technology Partner
+                  ESC Utility Services Pvt.Ltd
                 </span>
               </div>
             </div>
@@ -180,7 +218,7 @@ export default function Navbar() {
                         className={`flex items-center gap-1 px-3 py-2 text-sm transition-colors rounded-md ${
                           isParentActive
                             ? 'font-bold text-[#962228] bg-red-50/90 border-b-2 border-[#962228]'
-                            : 'font-medium text-gray-700 hover:text-[#962228] hover:bg-red-50'
+                            : inactiveNavClass
                         }`}
                       >
                         {link.label}
@@ -221,16 +259,14 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     className={`px-3 py-2 text-sm transition-colors rounded-md flex items-center gap-1.5 relative ${
-                      isActive
-                        ? 'font-bold text-[#962228] bg-red-50/90 border-b-2 border-[#962228] shadow-xs'
-                        : 'font-medium text-gray-700 hover:text-[#962228] hover:bg-red-50'
+                      isActive ? activeNavClass : inactiveNavClass
                     }`}
                   >
                     {link.label}
                     {link.isSpecial && (
                       <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00d4ff] opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00d4ff] shadow-[0_0_8px_#00d4ff]"></span>
+                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${labDotClass} opacity-75`}></span>
+                        <span className={`relative inline-flex rounded-full h-2 w-2 ${labDotClass} ${labDotGlowClass}`}></span>
                       </span>
                     )}
                   </Link>
@@ -239,19 +275,55 @@ export default function Navbar() {
             </nav>
 
             {/* Mobile Menu Toggle */}
-            <button
-              className="md:hidden p-2 rounded-md text-gray-600 hover:text-[#962228] hover:bg-red-50 transition-colors"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
-            >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
+            <div className="flex items-center gap-2 md:hidden">
+              <button
+                className="p-2 rounded-md text-gray-600 hover:text-[#962228] hover:bg-red-50 transition-colors"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label="Toggle menu"
+              >
+                {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
+
           </div>
         </div>
 
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 shadow-lg">
+            {/* Mobile Language Switcher */}
+            <div className="px-4 py-3 bg-slate-50 border-b border-gray-100 flex items-center justify-between">
+              <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                {language === 'DE' ? 'Sprache / Language' : 'Language'}
+              </span>
+              <div className="flex items-center bg-gray-200/80 rounded-full p-0.5 border border-gray-300 text-xs font-semibold">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLanguage('EN')
+                    setMenuOpen(false)
+                  }}
+                  className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                    language === 'EN' ? 'bg-[#962228] text-white shadow-sm' : 'text-gray-700 hover:text-black'
+                  }`}
+                >
+                  EN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLanguage('DE')
+                    setMenuOpen(false)
+                  }}
+                  className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                    language === 'DE' ? 'bg-[#962228] text-white shadow-sm' : 'text-gray-700 hover:text-black'
+                  }`}
+                >
+                  DE
+                </button>
+              </div>
+            </div>
+
             <div className="px-4 py-3 space-y-1">
               {navLinks.map((link) => {
                 if (link.children) {
@@ -297,8 +369,8 @@ export default function Navbar() {
                     <span>{link.label}</span>
                     {link.isSpecial && (
                       <span className="relative flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00d4ff] opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00d4ff] shadow-[0_0_8px_#00d4ff]"></span>
+                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${labDotClass} opacity-75`}></span>
+                        <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${labDotClass} ${labDotGlowClass}`}></span>
                       </span>
                     )}
                   </Link>
@@ -323,7 +395,7 @@ export default function Navbar() {
               <Search size={18} className="text-[#962228]" />
               <input
                 type="text"
-                placeholder="Search services, pages, insights..."
+                placeholder={t.nav.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 autoFocus
@@ -341,11 +413,11 @@ export default function Navbar() {
             {/* Search Results List */}
             <div className="max-h-80 overflow-y-auto p-3 space-y-1">
               <p className="px-3 py-1.5 text-[10px] font-mono font-bold tracking-widest text-slate-400 uppercase">
-                {searchQuery.trim() ? 'Matching Results' : 'Suggested Pages'}
+                {searchQuery.trim() ? t.nav.searchMatching : t.nav.searchSuggested}
               </p>
               {filteredSearchResults.length === 0 ? (
                 <div className="py-8 text-center text-slate-500 text-sm">
-                  No matching results found for &quot;{searchQuery}&quot;
+                  {t.nav.noResults} &quot;{searchQuery}&quot;
                 </div>
               ) : (
                 filteredSearchResults.map((item) => (
@@ -377,7 +449,7 @@ export default function Navbar() {
 
             {/* Modal Footer */}
             <div className="px-4 py-2.5 bg-slate-100/80 border-t border-slate-200 text-right">
-              <span className="text-[11px] text-slate-500 font-mono">Press ESC to exit</span>
+              <span className="text-[11px] text-slate-500 font-mono">{t.nav.pressEsc}</span>
             </div>
           </div>
         </div>

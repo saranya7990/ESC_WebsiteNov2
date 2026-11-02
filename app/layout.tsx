@@ -4,15 +4,16 @@ import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageTransition from '@/components/ui/PageTransition'
+import { LanguageProvider } from '@/context/LanguageContext'
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
 const outfit = Outfit({ subsets: ['latin'], variable: '--font-outfit' })
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-plus-jakarta' })
 
 export const metadata: Metadata = {
-  title: 'ESC Utility Services | Indo-German Technology Partner',
+  title: 'ESC Utility Services Pvt.Ltd',
   description:
-    'Delivering Software Engineering, Generative AI, Intelligent Automation, and IT back-office services for Energy and Water industry organizations.',
+    'IT Back Office & Automation Service Provider for Energy, Gas and Water Industry companies.',
 }
 
 export default function RootLayout({
@@ -22,14 +23,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${geist.className} ${outfit.variable} ${plusJakarta.variable} bg-black antialiased font-sans`}>
-        <Navbar />
-        <main className="pt-16">
-          <PageTransition>
-            {children}
-          </PageTransition>
-        </main>
-        <Footer />
+      <body className={`${geist.className} ${outfit.variable} ${plusJakarta.variable} bg-white antialiased font-sans`}>
+        <LanguageProvider>
+          <Navbar />
+          <main className="pt-16">
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   )

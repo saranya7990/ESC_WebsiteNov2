@@ -4,88 +4,22 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
-  Cpu,
-  BrainCircuit,
   Workflow,
   Server,
   ArrowRight,
-  Sparkles,
   ShieldCheck,
   CheckCircle2,
   MousePointer,
   Zap,
   Lock,
   LineChart,
+  FileText,
+  Smartphone,
 } from 'lucide-react'
-
-const serviceItems = [
-  {
-    id: '01',
-    badge: 'Enterprise Core',
-    icon: Cpu,
-    category: 'Cloud & Custom Systems',
-    title: 'Software Engineering',
-    description:
-      'Custom enterprise software solutions built for grid operations, smart water networks, and SCADA integrations — highly scalable, resilient, and secure.',
-    tags: ['Grid Systems', 'Cloud Native', 'SCADA / IoT'],
-    href: '/services',
-  },
-  {
-    id: '02',
-    badge: 'AI & Machine Learning',
-    icon: BrainCircuit,
-    category: 'Predictive AI & Analytics',
-    title: 'Generative AI & ML',
-    description:
-      'Harness cutting-edge AI models for automated asset diagnostics, load forecasting, predictive maintenance, and intelligent decision-making.',
-    tags: ['Predictive ML', 'LLM Agents', 'Anomaly Detection'],
-    href: '/services',
-  },
-  {
-    id: '03',
-    badge: 'Process Automation',
-    icon: Workflow,
-    category: 'Process Optimization',
-    title: 'Intelligent Automation',
-    description:
-      'End-to-end RPA and workflow automation that eliminates operational manual bottlenecks across billing, dispatch, and compliance workflows.',
-    tags: ['RPA Workflows', 'Dispatch Auto', 'Cost Efficiency'],
-    href: '/services',
-  },
-  {
-    id: '04',
-    badge: '24/7 Managed IT',
-    icon: Server,
-    category: 'Infrastructure & Support',
-    title: 'IT Back-Office Services',
-    description:
-      'Mission-critical IT infrastructure management, 24/7 back-office operations, database administration, and dedicated tier-3 support.',
-    tags: ['24/7 Managed IT', 'Cloud Infra', 'Database Admin'],
-    href: '/services',
-  },
-  {
-    id: '05',
-    badge: 'Market Intelligence',
-    icon: LineChart,
-    category: 'Research & Intelligence',
-    title: 'Market Research & Analysis',
-    description:
-      'Transform web-based market research into actionable business intelligence through systematic data capture, validation, analysis, and authentication.',
-    tags: ['Market Intelligence', 'Data Validation', 'Business Insights'],
-    href: '/services',
-  },
-]
-
-// All cards on the 3D ring wheel
-const ringCards = serviceItems
-
-const highlights = [
-  { icon: ShieldCheck, title: 'ISO/IEC 27001:2022', desc: 'Information Security Certified' },
-  { icon: Lock, title: 'GDPR & EU Compliant', desc: 'Strict European Data Privacy' },
-  { icon: Sparkles, title: 'Indo-German Model', desc: 'European Standard Delivery' },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function ServicesPreview() {
+  const { language, t } = useLanguage()
   const stageRef = useRef<HTMLDivElement>(null)
   const [rotationAngle, setRotationAngle] = useState(0)
   const targetAngleRef = useRef(0)
@@ -93,6 +27,61 @@ export default function ServicesPreview() {
   const isHoveredRef = useRef(false)
   const touchStartY = useRef<number | null>(null)
   const animFrameId = useRef<number | null>(null)
+
+  const serviceItems = [
+    {
+      id: '01',
+      badge: t.home.servicesPreview.card1Badge,
+      icon: Server,
+      category: t.home.servicesPreview.card1Category,
+      title: t.home.servicesPreview.card1Title,
+      description: t.home.servicesPreview.card1Desc,
+      tags: t.home.servicesPreview.card1Tags,
+      href: '/services',
+    },
+    {
+      id: '02',
+      badge: t.home.servicesPreview.card2Badge,
+      icon: Workflow,
+      category: t.home.servicesPreview.card2Category,
+      title: t.home.servicesPreview.card2Title,
+      description: t.home.servicesPreview.card2Desc,
+      tags: t.home.servicesPreview.card2Tags,
+      href: '/services',
+    },
+    {
+      id: '03',
+      badge: t.home.servicesPreview.card3Badge,
+      icon: FileText,
+      category: t.home.servicesPreview.card3Category,
+      title: t.home.servicesPreview.card3Title,
+      description: t.home.servicesPreview.card3Desc,
+      tags: t.home.servicesPreview.card3Tags,
+      href: '/services',
+    },
+    {
+      id: '04',
+      badge: t.home.servicesPreview.card4Badge,
+      icon: LineChart,
+      category: t.home.servicesPreview.card4Category,
+      title: t.home.servicesPreview.card4Title,
+      description: t.home.servicesPreview.card4Desc,
+      tags: t.home.servicesPreview.card4Tags,
+      href: '/services',
+    },
+    {
+      id: '05',
+      badge: t.home.servicesPreview.card5Badge,
+      icon: Smartphone,
+      category: t.home.servicesPreview.card5Category,
+      title: t.home.servicesPreview.card5Title,
+      description: t.home.servicesPreview.card5Desc,
+      tags: t.home.servicesPreview.card5Tags,
+      href: '/services',
+    },
+  ]
+
+  const ringCards = serviceItems
 
   // Smooth animation frame loop for physics momentum interpolation and auto-rotation
   useEffect(() => {
@@ -153,28 +142,7 @@ export default function ServicesPreview() {
   const numCards = ringCards.length
 
   return (
-    <section className="relative bg-gradient-to-b from-[#e2e8f0] via-[#f1f5f9] to-[#cbd5e1] py-24 lg:py-32 overflow-hidden border-y border-slate-300/80 shadow-inner">
-      {/* Background Metallic Light Reflections & Silver Mesh */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Top Metallic Light Beam */}
-        <div
-          className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full opacity-50 blur-[130px]"
-          style={{
-            background: 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(226,232,240,0.7) 60%, transparent 100%)',
-          }}
-        />
-
-        {/* Central Crimson Ambient Soft Glow */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] lg:w-[1000px] h-[550px] rounded-full opacity-15 blur-[150px]"
-          style={{
-            background: 'radial-gradient(circle, rgba(150,34,40,0.6) 0%, transparent 70%)',
-          }}
-        />
-
-        {/* Silver Metallic Grid Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_45%,#000_70%,transparent_100%)]" />
-      </div>
+    <section className="relative bg-white py-24 lg:py-32 overflow-hidden border-y border-[#E5E7EB]">
 
       <div className="relative z-10 max-w-[1536px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full">
         {/* Section Header */}
@@ -187,21 +155,22 @@ export default function ServicesPreview() {
             className="max-w-3xl"
           >
             {/* Section Tag Badge */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 shadow-sm mb-6 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#962228] font-outfit">
-                Capabilities & Expertise
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#F1F3F5] border border-[#E5E7EB] mb-6">
+              <span className="w-2 h-2 rounded-full bg-[#861F2B] animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#861F2B] font-outfit">
+                {language === 'DE' ? 'Kompetenzen & Portfolio' : 'Capabilities & Expertise'}
               </span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-[1.15] tracking-tight font-plus-jakarta">
-              Engineering Excellence for{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
-                Next-Gen Utilities
-              </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#252B33] leading-[1.15] tracking-tight font-plus-jakarta">
+              {t.home.servicesPreview.headingPre}{' '}
+              <span className="text-[#861F2B]">
+                {t.home.servicesPreview.headingHighlight}
+              </span>{' '}
+              {t.home.servicesPreview.headingPost}
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-slate-700 font-light max-w-2xl leading-relaxed">
-              We empower Energy and Water organizations across Europe and worldwide with high-performance software, AI intelligence, and seamless automation.
+            <p className="mt-4 text-base sm:text-lg text-[#6B7280] font-normal max-w-2xl leading-relaxed">
+              {t.home.servicesPreview.subtitle}
             </p>
           </motion.div>
 
@@ -213,16 +182,16 @@ export default function ServicesPreview() {
             className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
           >
             {/* Scroll Hint Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/80 border border-slate-300 text-xs font-medium text-slate-700 shadow-sm backdrop-blur-md font-outfit">
-              <MousePointer className="w-3.5 h-3.5 text-[#962228] animate-bounce" />
-              <span>Tap cards or drag to spin</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-[#E5E7EB] text-xs font-medium text-[#6B7280] font-outfit">
+              <MousePointer className="w-3.5 h-3.5 text-[#861F2B] animate-bounce" />
+              <span>{language === 'DE' ? 'Karten antippen oder drehen' : 'Tap cards or drag to spin'}</span>
             </div>
 
             <Link
               href="/services"
-              className="group inline-flex items-center gap-3 px-7 py-3.5 text-sm font-semibold text-white bg-gradient-to-r from-[#962228] to-[#b82830] hover:from-[#7a1b20] hover:to-[#962228] rounded-2xl shadow-lg shadow-[#962228]/25 hover:shadow-xl hover:shadow-[#962228]/35 transition-all duration-300 font-outfit"
+              className="group inline-flex items-center gap-3 px-7 py-3.5 text-sm font-semibold text-white bg-[#861F2B] hover:bg-[#6E1923] rounded-xl shadow-sm hover:shadow-md transition-all duration-300 font-outfit"
             >
-              <span>Explore All Capabilities</span>
+              <span>{language === 'DE' ? 'Alle Leistungen entdecken' : 'Explore All Capabilities'}</span>
               <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1.5 transition-transform duration-300" />
             </Link>
           </motion.div>
@@ -297,22 +266,14 @@ export default function ServicesPreview() {
                     transformStyle: 'preserve-3d',
                   }}
                 >
-                  {/* SILVER GLASSMORPHIC CARD */}
+                  {/* CLEAN WHITE CARD */}
                   <div
-                    className={`relative w-full rounded-3xl p-6 sm:p-7 transition-all duration-300 overflow-hidden ${
+                    className={`relative w-full rounded-3xl p-6 sm:p-7 transition-all duration-300 overflow-hidden bg-white border ${
                       isFront
-                        ? 'bg-white border-2 border-[#962228] shadow-[0_20px_50px_rgba(150,34,40,0.22),0_10px_25px_rgba(0,0,0,0.08)] backdrop-blur-2xl'
-                        : 'bg-white/90 border border-slate-300 shadow-[0_10px_30px_rgba(0,0,0,0.08)] backdrop-blur-xl hover:border-slate-400'
+                        ? 'border-[#E5E7EB] shadow-[0_20px_45px_rgba(37,43,51,0.12)]'
+                        : 'border-[#E5E7EB] shadow-[0_8px_24px_rgba(37,43,51,0.06)] hover:border-[#6B7280]/30'
                     }`}
                   >
-                    {/* Top Specular White Highlight Line */}
-                    <div className="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent" />
-
-                    {/* Glowing Crimson Top Specular Bar for Front Card */}
-                    {isFront && (
-                      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#962228] via-[#e63946] to-[#962228] shadow-[0_0_12px_#e63946]" />
-                    )}
-
                     {/* Card Inner Layout with Edge Padding */}
                     <div className="relative z-10 flex flex-col justify-between h-full space-y-4">
                       <div>
@@ -322,8 +283,8 @@ export default function ServicesPreview() {
                           <div
                             className={`p-3 rounded-2xl transition-all duration-300 ${
                               isFront
-                                ? 'bg-[#962228] text-white shadow-[0_0_18px_rgba(150,34,40,0.35)]'
-                                : 'bg-[#962228]/10 border border-[#962228]/20 text-[#962228]'
+                                ? 'bg-[#861F2B] text-white'
+                                : 'bg-[#F1F3F5] border border-[#E5E7EB] text-[#861F2B]'
                             }`}
                           >
                             <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -331,42 +292,40 @@ export default function ServicesPreview() {
 
                           {/* CAPABILITY STATUS BADGE */}
                           <div
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-wider uppercase backdrop-blur-md border ${
-                              isFront
-                                ? 'bg-[#962228]/10 border-[#962228]/30 text-[#962228]'
-                                : 'bg-slate-200/80 border-slate-300 text-slate-800'
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-bold tracking-wider uppercase border bg-[#F1F3F5] border-[#E5E7EB] ${
+                              isFront ? 'text-[#861F2B]' : 'text-[#6B7280]'
                             }`}
                           >
-                            <Zap className="w-3 h-3 text-[#962228]" />
+                            <Zap className="w-3 h-3 text-[#861F2B]" />
                             <span>{service.badge}</span>
                           </div>
                         </div>
 
                         {/* Category Tag */}
-                        <span className="text-[10px] sm:text-[11px] font-bold tracking-widest uppercase text-[#962228] mb-1 block font-outfit">
+                        <span className="text-[10px] sm:text-[11px] font-bold tracking-widest uppercase text-[#861F2B] mb-1 block font-outfit">
                           {service.category}
                         </span>
 
                         {/* SERVICE TITLE */}
-                        <h3 className="text-base sm:text-lg font-black text-slate-950 mb-2 tracking-tight font-plus-jakarta">
+                        <h3 className="text-base sm:text-lg font-bold text-[#252B33] mb-2 tracking-tight leading-snug font-plus-jakarta line-clamp-2">
                           {service.title}
                         </h3>
 
                         {/* Description */}
-                        <p className="text-xs text-slate-900 font-medium leading-relaxed mb-3 line-clamp-3">
+                        <p className="text-sm text-[#6B7280] font-normal leading-relaxed mb-3 line-clamp-3">
                           {service.description}
                         </p>
                       </div>
 
                       {/* Footer Tags & Discover Button */}
                       <div>
-                        <div className="flex flex-wrap gap-1.5 mb-3.5 pt-3.5 border-t border-slate-200">
+                        <div className="flex flex-wrap gap-1.5 mb-3.5 pt-3.5 border-t border-[#E5E7EB]">
                           {service.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold text-slate-900 bg-slate-100 border border-slate-300 rounded-full backdrop-blur-sm"
+                              className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium text-[#252B33] bg-[#F1F3F5] border border-[#E5E7EB] rounded-full"
                             >
-                              <CheckCircle2 className="w-3 h-3 text-[#962228]" />
+                              <CheckCircle2 className="w-3 h-3 text-[#861F2B]" />
                               {tag}
                             </span>
                           ))}
@@ -382,11 +341,11 @@ export default function ServicesPreview() {
                           }}
                           className={`group/btn inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-300 font-outfit ${
                             isFront
-                              ? 'text-white bg-gradient-to-r from-[#962228] to-[#b82830] hover:from-[#7a1b20] hover:to-[#962228] shadow-md hover:shadow-lg'
-                              : 'text-slate-900 hover:text-[#962228] bg-slate-200/80 border border-slate-300 hover:border-[#962228]/40'
+                              ? 'text-white bg-[#861F2B] hover:bg-[#6E1923] shadow-sm'
+                              : 'text-[#252B33] hover:text-[#861F2B] bg-white border border-[#E5E7EB] hover:border-[#861F2B]/40'
                           }`}
                         >
-                          <span>Discover Capability</span>
+                          <span>{language === 'DE' ? 'Leistung ansehen' : 'Discover Capability'}</span>
                           <ArrowRight className="w-3.5 h-3.5 text-current group-hover/btn:translate-x-1.5 transition-transform duration-300" />
                         </Link>
                       </div>

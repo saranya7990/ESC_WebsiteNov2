@@ -3,35 +3,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function HeroSection() {
+  const { t, language } = useLanguage()
+
   return (
-    <section className="relative bg-gradient-to-b from-[#cbd5e1] via-[#f1f5f9] to-[#e2e8f0] min-h-[calc(100vh-4rem)] flex items-center overflow-hidden py-16 lg:py-24 border-b border-slate-300/80 shadow-inner">
-      
-      {/* Background Metallic Light Reflections & Silver Mesh Grid */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Top Metallic Light Beam */}
-        <div
-          className="absolute -top-32 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full opacity-80 blur-[140px]"
-          style={{
-            background: 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(226,232,240,0.7) 60%, transparent 100%)',
-          }}
-        />
-
-        {/* Central Ambient Crimson Glow */}
-        <div
-          className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[850px] rounded-full opacity-20 blur-[150px]"
-          style={{
-            background: 'radial-gradient(circle, rgba(150,34,40,0.7) 0%, transparent 70%)',
-          }}
-        />
-
-        {/* Silver Metallic Grid Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_45%,#000_70%,transparent_100%)]" />
-      </div>
+    <section
+      style={{ backgroundColor: '#ffffff' }}
+      className="flex-1 min-h-[480px] sm:min-h-[540px] lg:min-h-[580px] pt-[6.75rem] pb-6 sm:pt-[7.25rem] sm:pb-8 lg:pt-[7.5rem] lg:pb-10 relative bg-white flex items-center overflow-hidden border-b border-[#E5E7EB]"
+    >
 
       {/* FULL-BACKGROUND DIORAMA CONTAINER (Perfectly Framed & Centered Right) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-end z-20">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-end z-20 pt-20">
 
         {/* Floating Diorama Background Graphic */}
         <motion.div
@@ -40,7 +24,7 @@ export default function HeroSection() {
           animate={{
             opacity: 1,
             scale: 1,
-            y: [0, -22, 0],
+            y: [0, -18, 0],
           }}
           transition={{
             opacity: { duration: 1.2, delay: 0.3 },
@@ -52,12 +36,12 @@ export default function HeroSection() {
             },
           }}
         >
-          <div className="relative w-[80vw] sm:w-[75vw] h-[75vh] max-w-[1150px] max-h-[950px]">
+          <div className="relative w-[78vw] sm:w-[70vw] h-[380px] sm:h-[460px] lg:h-[520px] max-w-[1050px]">
             <Image
               src="/images/diaroma1.png"
-              alt="ESC Utility Services — Energy and Water Infrastructure Diorama"
+              alt="ESC Utility Services Pvt.Ltd — Energy and Water Infrastructure Diorama"
               fill
-              className="object-contain object-right drop-shadow-[0_20px_50px_rgba(0,0,0,0.12)]"
+              className="object-contain object-right"
               priority
               sizes="100vw"
             />
@@ -68,75 +52,54 @@ export default function HeroSection() {
       {/* Content Foreground (Text column aligned strictly to the left with zero diorama overlap) */}
       <div className="relative z-30 max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 w-full">
         <div className="max-w-md sm:max-w-lg lg:max-w-xl">
-          
-          {/* Eyebrow label with line indicator */}
-          <motion.div
-            className="flex items-center gap-3 mb-6 overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <motion.div
-              className="w-12 h-px bg-slate-400"
-              initial={{ scaleX: 0, originX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-            />
-            <motion.span
-              className="text-xs font-semibold tracking-[0.2em] uppercase text-slate-500 font-outfit"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              INDO-GERMAN TECHNOLOGY PARTNER
-            </motion.span>
-          </motion.div>
 
           {/* Main Headline — exact size & casing matching the red hero */}
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <motion.h1
-              className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-light text-slate-950 leading-[1.1] tracking-tight drop-shadow-sm font-plus-jakarta"
+              className={`${
+                language === 'DE'
+                  ? 'text-3xl sm:text-4xl lg:text-5xl xl:text-[3.25rem]'
+                  : 'text-4xl sm:text-5xl lg:text-6xl xl:text-7xl'
+              } font-light text-[#252B33] leading-[1.08] tracking-tight font-plus-jakarta`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, delay: 0.3 }}
             >
               <motion.span
-                className="block font-bold text-slate-950"
+                className="block font-bold text-[#252B33]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
-                Powering
+                {t.home.hero.powering}
               </motion.span>
               <motion.span
-                className="block text-slate-700 font-light"
+                className="block text-[#252B33] font-light"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
-                the Future of
+                {t.home.hero.theFutureOf}
               </motion.span>
               <motion.span
-                className="block font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700 whitespace-nowrap"
+                className="block font-extrabold text-[#861F2B] whitespace-nowrap"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
-                Utilities.
+                {t.home.hero.utilities}
               </motion.span>
             </motion.h1>
           </div>
 
           {/* Description — Wrapped cleanly to fit left of diorama */}
           <motion.p
-            className="text-slate-950 text-base sm:text-lg leading-relaxed mb-8 max-w-md sm:max-w-lg font-medium drop-shadow-sm"
+            className="text-[#252B33] text-sm sm:text-base lg:text-lg leading-relaxed mb-6 sm:mb-7 max-w-md sm:max-w-lg font-normal"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 1.1, ease: 'easeOut' }}
           >
-            We combine utility expertise with software, automation, data, and AI to
-            simplify complex operations, accelerate digital transformation, and
-            create lasting business value.
+            {t.home.hero.description}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -152,9 +115,9 @@ export default function HeroSection() {
             >
               <Link
                 href="/services"
-                className="px-7 py-3.5 text-sm font-bold text-white bg-[#962228] hover:bg-[#7a1b20] rounded-xl transition-all duration-300 shadow-md hover:shadow-lg inline-block"
+                className="px-7 py-3.5 text-sm font-bold text-white bg-[#861F2B] hover:bg-[#6E1923] rounded-xl transition-all duration-300 shadow-sm hover:shadow-md inline-block"
               >
-                Explore Services
+                {t.home.hero.ctaServices}
               </Link>
             </motion.div>
             <motion.div
@@ -163,9 +126,9 @@ export default function HeroSection() {
             >
               <Link
                 href="/about"
-                className="px-7 py-3.5 text-sm font-semibold text-slate-800 hover:text-slate-950 rounded-xl border border-slate-300 hover:border-slate-400 transition-all duration-300 inline-block bg-white/80 hover:bg-white backdrop-blur-sm"
+                className="px-7 py-3.5 text-sm font-semibold text-[#252B33] rounded-xl border border-[#E5E7EB] hover:border-[#6B7280]/40 hover:bg-[#F1F3F5] transition-all duration-300 inline-block bg-white"
               >
-                About ESC
+                {t.home.hero.ctaAbout}
               </Link>
             </motion.div>
           </motion.div>

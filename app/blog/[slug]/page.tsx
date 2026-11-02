@@ -4,6 +4,7 @@ import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, ArrowLeft, Clock, User } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext'
 import CTAStrip from '@/components/sections/CTAStrip'
 import PageTransition from '@/components/ui/PageTransition'
 
@@ -23,6 +24,8 @@ interface BlogPostItem {
 
 export default function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params)
+  const { language } = useLanguage()
+  const isDE = language === 'DE'
   const [article, setArticle] = useState<BlogPostItem | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -47,7 +50,7 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
   if (loading) {
     return (
       <div className="min-h-screen bg-[#f1f5f9] text-slate-900 flex items-center justify-center">
-        <p className="text-slate-600 font-medium">Loading article...</p>
+        <p className="text-slate-600 font-medium">{isDE ? 'Artikel wird geladen...' : 'Loading article...'}</p>
       </div>
     )
   }
@@ -55,11 +58,15 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
   if (!article) {
     return (
       <div className="min-h-screen bg-[#f1f5f9] text-slate-900 flex flex-col items-center justify-center p-4">
-        <h1 className="text-3xl font-extrabold mb-4 font-plus-jakarta">Blog Article Not Found</h1>
-        <p className="text-slate-600 mb-8">The requested blog post could not be found.</p>
+        <h1 className="text-3xl font-extrabold mb-4 font-plus-jakarta">
+          {isDE ? 'Blog-Artikel nicht gefunden' : 'Blog Article Not Found'}
+        </h1>
+        <p className="text-slate-600 mb-8">
+          {isDE ? 'Der angeforderte Blogbeitrag konnte nicht gefunden werden.' : 'The requested blog post could not be found.'}
+        </p>
         <Link href="/blog" className="px-6 py-3 rounded-xl bg-[#962228] text-white font-semibold flex items-center space-x-2 shadow-md">
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to All Articles</span>
+          <span>{isDE ? 'Zurück zu allen Artikeln' : 'Back to All Articles'}</span>
         </Link>
       </div>
     )
@@ -74,7 +81,7 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
             className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-slate-600 hover:text-[#962228] mb-8 transition font-outfit"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to All Articles</span>
+            <span>{isDE ? 'Zurück zu allen Artikeln' : 'Back to All Articles'}</span>
           </Link>
 
           {/* Header */}
@@ -111,7 +118,7 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
                 <p className="text-xs text-[#962228] font-bold font-outfit">{article.authorRole || 'Author & Utility Technology Lead'}</p>
               </div>
               <div className="hidden sm:flex items-center gap-4 text-xs text-slate-500 border-l border-slate-200 pl-6 font-outfit font-semibold">
-                <span>ESC Utility Services</span>
+                <span>ESC Utility Services Pvt.Ltd</span>
               </div>
             </div>
           </div>
@@ -137,12 +144,14 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
             </div>
             <div>
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#962228] font-outfit block mb-1">
-                Written By
+                {isDE ? 'Verfasst von' : 'Written By'}
               </span>
               <h4 className="text-xl font-bold text-slate-900 font-plus-jakarta">{article.authorName || 'ESC Technical Specialist'}</h4>
               <p className="text-xs text-[#962228] font-bold font-outfit mb-2">{article.authorRole || 'Author & Utility Software Specialist'}</p>
               <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                Author and technology lead at ESC Utility Services Pvt. Ltd. &bull; Specializing in energy grid digital transformation, software engineering, and intelligent automation.
+                {isDE
+                  ? 'Autor und Technologieführer bei ESC Utility Services Pvt.Ltd. • Spezialisiert auf die digitale Transformation von Energienetzen, Software-Engineering und intelligente Automatisierung.'
+                  : 'Author and technology lead at ESC Utility Services Pvt.Ltd. • Specializing in energy grid digital transformation, software engineering, and intelligent automation.'}
               </p>
             </div>
           </div>

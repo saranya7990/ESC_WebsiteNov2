@@ -6,40 +6,41 @@ import {
   ArrowRight,
   ShieldCheck,
   Building2,
-  Users2,
   Globe2,
   Award,
-  Sparkles,
 } from 'lucide-react'
-
-const stats = [
-  {
-    icon: Award,
-    value: '12+',
-    label: 'Years of Engineering Excellence',
-    desc: 'Deep utility domain knowledge since 2012',
-  },
-  {
-    icon: Building2,
-    value: '50+',
-    label: 'Enterprise Utility Clients',
-    desc: 'Trusted across Europe & India',
-  },
-  {
-    icon: ShieldCheck,
-    value: '2',
-    label: 'Core Specialized Sectors',
-    desc: 'Energy Grid & Smart Water Operations',
-  },
-  {
-    icon: Globe2,
-    value: '3',
-    label: 'Global Delivery Centers',
-    desc: 'Germany & Indian Technology Hubs',
-  },
-]
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function AboutTeaser() {
+  const { t } = useLanguage()
+
+  const stats = [
+    {
+      icon: Award,
+      value: t.home.aboutTeaser.stat1Value,
+      label: t.home.aboutTeaser.stat1Label,
+      desc: t.home.aboutTeaser.stat1Desc,
+    },
+    {
+      icon: Building2,
+      value: t.home.aboutTeaser.stat2Value,
+      label: t.home.aboutTeaser.stat2Label,
+      desc: t.home.aboutTeaser.stat2Desc,
+    },
+    {
+      icon: ShieldCheck,
+      value: t.home.aboutTeaser.stat3Value,
+      label: t.home.aboutTeaser.stat3Label,
+      desc: t.home.aboutTeaser.stat3Desc,
+    },
+    {
+      icon: Globe2,
+      value: t.home.aboutTeaser.stat4Value,
+      label: t.home.aboutTeaser.stat4Label,
+      desc: t.home.aboutTeaser.stat4Desc,
+    },
+  ]
+
   return (
     <section className="relative bg-gradient-to-b from-[#e2e8f0] via-[#f1f5f9] to-[#cbd5e1] py-24 lg:py-32 overflow-hidden border-y border-slate-300/80 shadow-inner">
       {/* Background Metallic Light Reflections & Silver Mesh */}
@@ -85,7 +86,7 @@ export default function AboutTeaser() {
             >
               <div className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#962228] font-outfit">
-                Who We Are
+                {t.home.aboutTeaser.badge}
               </span>
             </motion.div>
 
@@ -97,11 +98,11 @@ export default function AboutTeaser() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-[1.15] tracking-tight mb-6 font-plus-jakarta"
             >
-              Trusted by leading{' '}
+              {t.home.aboutTeaser.headlinePre}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
-                utility organizations
+                {t.home.aboutTeaser.headlineHighlight}
               </span>{' '}
-              worldwide
+              {t.home.aboutTeaser.headlinePost}
             </motion.h2>
 
             {/* Sub-Description Paragraphs */}
@@ -112,7 +113,7 @@ export default function AboutTeaser() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-slate-700 text-base sm:text-lg font-light leading-relaxed mb-4"
             >
-              ESC Utility Services is a specialized Indo-German technology partner delivering mission-critical software, AI diagnostics, and RPA automation to global Energy and Water networks.
+              {t.home.aboutTeaser.p1}
             </motion.p>
 
             <motion.p
@@ -122,7 +123,7 @@ export default function AboutTeaser() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-slate-600 text-sm sm:text-base font-light leading-relaxed mb-8"
             >
-              Founded on the principle of combining Indian engineering speed with German industrial precision, we help utility leaders modernize SCADA infrastructure, optimize asset lifecycle, and achieve operational sustainability.
+              {t.home.aboutTeaser.p2}
             </motion.p>
 
             {/* Action Link Button */}
@@ -136,7 +137,7 @@ export default function AboutTeaser() {
                 href="/about"
                 className="group inline-flex items-center gap-3 px-7 py-3.5 text-sm font-semibold text-white bg-gradient-to-r from-[#962228] to-[#b82830] hover:from-[#7a1b20] hover:to-[#962228] rounded-2xl shadow-lg shadow-[#962228]/25 hover:shadow-xl hover:shadow-[#962228]/35 transition-all duration-300 font-outfit"
               >
-                <span>Learn More About ESC</span>
+                <span>{t.home.aboutTeaser.btn}</span>
                 <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1.5 transition-transform duration-300" />
               </Link>
             </motion.div>
@@ -149,53 +150,38 @@ export default function AboutTeaser() {
               return (
                 <motion.div
                   key={stat.label}
-                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: false, amount: 0.2 }}
                   transition={{
                     duration: 0.6,
-                    delay: index * 0.15,
+                    delay: 0.15 * index,
                     ease: [0.25, 0.46, 0.45, 0.94],
                   }}
-                  whileHover={{ y: -6, scale: 1.02 }}
-                  className="group relative"
+                  whileHover={{
+                    y: -6,
+                    transition: { duration: 0.3 },
+                  }}
+                  className="group relative p-7 rounded-3xl bg-white/70 border border-slate-300 shadow-lg shadow-slate-300/30 backdrop-blur-xl hover:shadow-xl hover:border-slate-400/80 transition-all duration-300 overflow-hidden"
                 >
-                  {/* SILVER GLASS CARD CONTAINER */}
-                  <div className="relative h-full p-7 rounded-3xl bg-white/70 backdrop-blur-xl border border-white/90 shadow-[0_10px_30px_rgba(0,0,0,0.06)] group-hover:shadow-[0_20px_40px_rgba(150,34,40,0.18)] group-hover:border-[#962228]/40 transition-all duration-500 overflow-hidden flex flex-col justify-between">
-                    
-                    {/* Top Animated Crimson Specular Line */}
-                    <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#962228] via-[#e63946] to-[#962228] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* Subtle top edge metallic highlight */}
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white to-transparent opacity-90" />
 
-                    {/* Specular White Top Highlight */}
-                    <div className="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent" />
-
-                    <div>
-                      {/* Icon & Sparkle Row */}
-                      <div className="flex items-center justify-between mb-5">
-                        <div className="p-3 rounded-2xl bg-gradient-to-br from-[#962228]/10 to-[#e63946]/10 border border-[#962228]/20 text-[#962228] group-hover:bg-[#962228] group-hover:text-white transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(150,34,40,0.3)]">
-                          <IconComp className="w-5 h-5 sm:w-6 sm:h-6" />
-                        </div>
-
-                        <Sparkles className="w-4 h-4 text-amber-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </div>
-
-                      {/* Animated Metallic Stat Number */}
-                      <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#962228] mb-1.5 tracking-tight font-plus-jakarta drop-shadow-sm group-hover:scale-105 origin-left transition-transform duration-300">
-                        {stat.value}
-                      </div>
-
-                      {/* Title Label */}
-                      <div className="text-sm font-bold text-slate-800 mb-1 leading-snug font-outfit">
-                        {stat.label}
-                      </div>
-
-                      {/* Brief Sub-Description */}
-                      <div className="text-xs text-slate-500 font-light leading-relaxed">
-                        {stat.desc}
-                      </div>
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-300 flex items-center justify-center text-[#962228] group-hover:scale-110 group-hover:bg-[#962228] group-hover:text-white transition-all duration-300 shadow-sm">
+                      <IconComp className="w-6 h-6 transition-colors duration-300" />
                     </div>
-
+                    <span className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-plus-jakarta tracking-tight group-hover:text-[#962228] transition-colors duration-300">
+                      {stat.value}
+                    </span>
                   </div>
+
+                  <h3 className="text-base font-bold text-slate-900 mb-1.5 font-plus-jakarta leading-snug">
+                    {stat.label}
+                  </h3>
+                  <p className="text-xs text-slate-600 font-light leading-relaxed">
+                    {stat.desc}
+                  </p>
                 </motion.div>
               )
             })}
@@ -205,4 +191,4 @@ export default function AboutTeaser() {
       </div>
     </section>
   )
-}
+}

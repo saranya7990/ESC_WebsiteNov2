@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { ArrowLeft, ArrowRight, Webhook, FileSearch, Boxes, BrainCog, Share2, Database } from 'lucide-react'
 import {
   SiReact, SiNextdotjs, SiNodedotjs, SiHtml5, SiCss, SiPython, SiFastapi,
@@ -16,6 +16,7 @@ import CTAStrip from '@/components/sections/CTAStrip'
 import HeroBridge from '@/components/sections/HeroBridge'
 import PageTransition from '@/components/ui/PageTransition'
 import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
+import { useLanguage } from '@/context/LanguageContext'
 
 // A few entries have no dedicated logo in any icon set available to us
 // (Power Apps/Automate/BI/Pages, SharePoint, REST APIs, RAG, Vector
@@ -90,7 +91,7 @@ type Value = {
   description: string
 }
 
-const values: Value[] = [
+const valuesEN: Value[] = [
   {
     title: 'Engineering Excellence',
     description: 'We approach every solution with precision, technical expertise, and a commitment to delivering work that stands the test of time.',
@@ -125,6 +126,41 @@ const values: Value[] = [
   },
 ]
 
+const valuesDE: Value[] = [
+  {
+    title: 'Technische Spitzenleistung',
+    description: 'Wir entwickeln jede Lösung mit höchster Präzision, fundiertem Fachwissen und dem Anspruch an dauerhafte Zukunftsfähigkeit.',
+  },
+  {
+    title: 'Partnerschaftliche Zusammenarbeit',
+    description: 'Wir agieren als verlässliche Erweiterung der Teams unserer Kunden – auf Basis von Vertrauen, Transparenz und messbarem Erfolg.',
+  },
+  {
+    title: 'Intelligente Innovation',
+    description: 'Wir nutzen modernste Technologien und Automatisierung, um praxisnahe, zukunftsfähige Lösungen mit echtem Mehrwert zu schaffen.',
+  },
+  {
+    title: 'Kompromisslose Qualität',
+    description: 'Von der Konzeption bis zur Einführung gewährleisten wir höchste Standards für Zuverlässigkeit, Sicherheit und Performance.',
+  },
+  {
+    title: 'Eigenverantwortung & Verlässlichkeit',
+    description: 'Wir übernehmen Verantwortung für jedes Projekt und erfüllen unsere Zusagen mit Professionalität und Sorgfalt.',
+  },
+  {
+    title: 'Kontinuierliche Verbesserung',
+    description: 'Jeder Prozess lässt sich optimieren. Durch kontinuierliches Lernen und Weiterentwickeln sichern wir Kunden Wettbewerbsvorteile.',
+  },
+  {
+    title: 'Globale Standards, lokale Exzellenz',
+    description: 'Durch die Verbindung deutscher Ingenieursdisziplin mit indischer Entwicklungsstärke bieten wir erstklassige Lösungen mit hoher Agilität.',
+  },
+  {
+    title: 'Sicherheit von Beginn an',
+    description: 'Informationssicherheit, Datenschutz und Systemstabilität sind integraler Bestandteil jeder unserer Lösungen – von Tag eins an.',
+  },
+]
+
 type TeamMember = {
   initials: string
   name: string
@@ -137,36 +173,36 @@ const team: TeamMember[] = [
   {
     initials: 'ND',
     name: 'Nagaraj Deivanayagam',
-    role: 'Associate Manager & Team Lead',
-    photo: '/images/em1.png',
+    role: 'Business Process Management Services',
+    photo: '/images/team-1.png',
     bio: 'Leading strategic technology initiatives, managing operational team workflows, and driving high-quality software engineering execution.',
   },
   {
     initials: 'PB',
     name: 'Pooja Babu',
-    role: 'Assistant Manager & Team Lead',
-    photo: '/images/em2.png',
+    role: 'Technology and Innovation',
+    photo: '/images/team-2.png',
     bio: 'Coordinating cross-functional engineering teams, facilitating technical delivery, and ensuring project milestones meet international quality standards.',
   },
   {
     initials: 'PA',
     name: 'Parvathy Ajitha',
-    role: 'Team Lead',
-    photo: '/images/em3.png',
+    role: 'Digitalisation',
+    photo: '/images/team-3.png',
     bio: 'Guiding core software engineering teams, overseeing daily technical operations, and driving project quality across client engagements.',
   },
   {
     initials: 'RS',
     name: 'Reshma Suresh',
-    role: 'Assistant Manager - Operations and HRM',
-    photo: '/images/em4.png',
+    role: 'Operations & HRM',
+    photo: '/images/team-4.png',
     bio: 'Managing human resource management, operational strategy, organizational growth, and talent development across ESC.',
   },
   {
     initials: 'SA',
     name: 'Soumya Arayilvalapil',
-    role: 'Team Lead',
-    photo: '/images/em5.png',
+    role: 'Security & Compliance',
+    photo: '/images/team-5.png',
     bio: 'Leading technical delivery units, orchestrating software development workflows, and maintaining rigorous QA standards.',
   },
 ]
@@ -242,42 +278,24 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
   const numCards = values.length
 
   return (
-    <section ref={wrapperRef} className="relative w-full bg-gradient-to-b from-[#e2e8f0] via-[#f1f5f9] to-[#cbd5e1] border-y border-slate-300/80 shadow-inner" style={{ height: '200vh' }}>
-      <div className="sticky top-0 h-screen w-full flex flex-col overflow-hidden">
-        {/* Background Metallic Light Reflections & Silver Mesh */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {/* Top Metallic Light Beam */}
-          <div
-            className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[400px] rounded-full opacity-50 blur-[130px]"
-            style={{
-              background: 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(226,232,240,0.7) 60%, transparent 100%)',
-            }}
-          />
-
-          {/* Central Soft Crimson Glow */}
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-15 blur-[150px]"
-            style={{
-              background: 'radial-gradient(circle, rgba(150,34,40,0.6) 0%, transparent 70%)',
-            }}
-          />
-
-          {/* Silver Metallic Grid Overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_45%,#000_70%,transparent_100%)]" />
-        </div>
-
+    <section
+      ref={wrapperRef}
+      className="relative w-full bg-white"
+      style={{ height: '200vh', backgroundColor: '#FFFFFF' }}
+    >
+      <div className="sticky top-0 h-screen w-full flex flex-col overflow-hidden bg-white" style={{ backgroundColor: '#FFFFFF' }}>
         {/* Section Header */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20 lg:pt-28 w-full">
           <AnimateOnScroll direction="up" className="mb-4">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300 shadow-sm mb-4 backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#962228] font-outfit">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[#E5E7EB] shadow-sm mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#861F2B] animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#861F2B] font-outfit">
                 What Drives Us
               </span>
             </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] tracking-tight font-plus-jakarta">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#252B33] leading-[1.15] tracking-tight font-plus-jakarta">
               Our{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
+              <span className="text-[#861F2B]">
                 Core Values
               </span>
             </h2>
@@ -330,44 +348,37 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
                     transformStyle: 'preserve-3d',
                   }}
                 >
-                  {/* Silver Glassmorphic Card */}
+                  {/* Clean White Card */}
                   <div
-                    className={`relative w-full rounded-3xl p-7 sm:p-9 transition-all duration-300 overflow-hidden backdrop-blur-2xl ${isFront
-                      ? 'bg-white border-2 border-[#962228] shadow-[0_20px_50px_rgba(150,34,40,0.22),0_10px_25px_rgba(0,0,0,0.08)]'
-                      : 'bg-white/90 border border-slate-300 shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:border-slate-400'
-                      }`}
+                    className={`relative w-full rounded-3xl p-7 sm:p-9 transition-all duration-300 overflow-hidden bg-white border border-[#E5E7EB] ${
+                      isFront
+                        ? 'shadow-[0_20px_45px_rgba(37,43,51,0.12)]'
+                        : 'shadow-[0_8px_24px_rgba(37,43,51,0.06)] hover:border-[#6B7280]/30'
+                    }`}
+                    style={{ backgroundColor: '#FFFFFF' }}
                   >
-                    {/* Top Specular White Highlight Line */}
-                    <div className="absolute top-0 left-6 right-6 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent" />
-
-                    {/* Top Crimson Specular Bar for Front Card */}
-                    {isFront && (
-                      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#962228] via-[#e63946] to-[#962228] shadow-[0_0_12px_#e63946]" />
-                    )}
-
                     {/* Content */}
                     <div className="relative z-10">
                       <div className="flex items-start gap-3 mb-4">
                         <div
-                          className={`w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isFront
-                            ? 'bg-[#962228] text-white shadow-[0_0_18px_rgba(150,34,40,0.35)]'
-                            : 'bg-[#962228]/10 border border-[#962228]/20 text-[#962228]'
-                            }`}
+                          className={`w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                            isFront
+                              ? 'bg-[#861F2B] text-white shadow-sm'
+                              : 'bg-[#F1F3F5] border border-[#E5E7EB] text-[#861F2B]'
+                          }`}
                         >
                           <span className="text-lg font-bold">●</span>
                         </div>
                       </div>
 
                       <h3
-                        className={`text-xl sm:text-2xl font-black mb-3 tracking-tight font-plus-jakarta transition-colors duration-300 ${isFront ? 'text-slate-950' : 'text-slate-900'
-                          }`}
+                        className="text-xl sm:text-2xl font-bold mb-3 tracking-tight font-plus-jakarta text-[#252B33]"
                       >
                         {value.title}
                       </h3>
 
                       <p
-                        className={`text-xs sm:text-sm leading-relaxed transition-colors duration-300 ${isFront ? 'text-slate-900 font-medium' : 'text-slate-800 font-normal'
-                          }`}
+                        className="text-xs sm:text-sm leading-relaxed text-[#6B7280] font-normal"
                       >
                         {value.description}
                       </p>
@@ -383,7 +394,7 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.6 }}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-semibold text-slate-700 pointer-events-none flex flex-col items-center gap-1 px-4 py-2 rounded-full bg-white/80 border border-slate-300 shadow-sm backdrop-blur-md"
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-semibold text-[#6B7280] pointer-events-none flex flex-col items-center gap-1 px-4 py-2 rounded-full bg-white border border-[#E5E7EB] shadow-sm"
           >
             <motion.span
               animate={{ y: [0, 5, 0] }}
@@ -404,23 +415,78 @@ const CoreValuesSection = ({ values }: { values: Value[] }) => {
 // instead of a 3D ring: the center card is large, sharp and lifted, and its
 // neighbors stay fully visible (not shrunk to a sliver) right beside it.
 // Leadership team — Modern 3D Coverflow Deck matching reference design.
+// Autoplay continuously cycles each member into the center spotlight with smooth momentum physics,
+// pause-on-hover, touch swipe gesture support, and reduced-motion accessibility.
 const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
   const stageRef = useRef<HTMLDivElement>(null)
   const [centerIndex, setCenterIndex] = useState(0)
   const targetIndexRef = useRef(0)
   const currentIndexRef = useRef(0)
   const isHoveredRef = useRef(false)
-  const touchStartX = useRef<number | null>(null)
+  const isInteractingRef = useRef(false)
+  const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null)
   const animFrameId = useRef<number | null>(null)
+  const touchStartX = useRef<number | null>(null)
+  const touchDeltaX = useRef(0)
+  const mouseStartX = useRef<number | null>(null)
+  const mouseDeltaX = useRef(0)
+  const isMouseDownRef = useRef(false)
+
+  const [spacing, setSpacing] = useState(250)
 
   const numCards = team.length
 
-  // Smooth momentum interpolation loop
+  // Responsive spacing for mobile, tablet, and desktop
+  useEffect(() => {
+    const handleResize = () => {
+      const w = window.innerWidth
+      if (w < 640) {
+        setSpacing(175)
+      } else if (w < 1024) {
+        setSpacing(215)
+      } else {
+        setSpacing(250)
+      }
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Autoplay function: smoothly moves to the next card every 3.6 seconds
+  const startAutoplay = useCallback(() => {
+    if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current)
+
+    if (typeof window !== 'undefined') {
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+      if (mq.matches) return
+    }
+
+    autoplayTimerRef.current = setInterval(() => {
+      if (!isHoveredRef.current && !isInteractingRef.current) {
+        targetIndexRef.current = Math.round(targetIndexRef.current) + 1
+      }
+    }, 3600)
+  }, [])
+
+  const resetAutoplayTimer = useCallback(() => {
+    startAutoplay()
+  }, [startAutoplay])
+
+  useEffect(() => {
+    startAutoplay()
+    return () => {
+      if (autoplayTimerRef.current) clearInterval(autoplayTimerRef.current)
+    }
+  }, [startAutoplay])
+
+  // Smooth momentum interpolation loop (60fps / 120fps physics)
   useEffect(() => {
     const updatePhysics = () => {
       const diff = targetIndexRef.current - currentIndexRef.current
       if (Math.abs(diff) > 0.001) {
-        currentIndexRef.current += diff * 0.12
+        // 0.08 produces an elegant, fluid exponential decay glide into center spotlight (~1s transition)
+        currentIndexRef.current += diff * 0.08
         setCenterIndex(currentIndexRef.current)
       }
       animFrameId.current = requestAnimationFrame(updatePhysics)
@@ -432,46 +498,115 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
     }
   }, [])
 
-  // Non-passive wheel listener
+  // Wheel listener: snap smoothly when scrolled
   useEffect(() => {
     const stage = stageRef.current
     if (!stage) return
+
+    let wheelTimeout: NodeJS.Timeout | null = null
 
     const handleWheel = (e: WheelEvent) => {
       if (!isHoveredRef.current) return
       e.preventDefault()
       e.stopPropagation()
-      targetIndexRef.current += e.deltaY * 0.005
+      isInteractingRef.current = true
+      targetIndexRef.current += e.deltaY * 0.003
+
+      if (wheelTimeout) clearTimeout(wheelTimeout)
+      wheelTimeout = setTimeout(() => {
+        targetIndexRef.current = Math.round(targetIndexRef.current)
+        isInteractingRef.current = false
+        resetAutoplayTimer()
+      }, 150)
     }
 
     stage.addEventListener('wheel', handleWheel, { passive: false })
     return () => {
       stage.removeEventListener('wheel', handleWheel)
+      if (wheelTimeout) clearTimeout(wheelTimeout)
     }
-  }, [])
+  }, [resetAutoplayTimer])
 
+  // Touch gesture handlers for mobile & tablet
   const handleTouchStart = (e: React.TouchEvent) => {
+    isInteractingRef.current = true
     touchStartX.current = e.touches[0].clientX
+    touchDeltaX.current = 0
   }
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (touchStartX.current === null) return
-    const diffX = touchStartX.current - e.touches[0].clientX
-    targetIndexRef.current += diffX * 0.006
-    touchStartX.current = e.touches[0].clientX
+    touchDeltaX.current = e.touches[0].clientX - touchStartX.current
+  }
+
+  const handleTouchEnd = () => {
+    isInteractingRef.current = false
+    if (Math.abs(touchDeltaX.current) > 35) {
+      if (touchDeltaX.current < 0) {
+        targetIndexRef.current = Math.round(targetIndexRef.current) + 1
+      } else {
+        targetIndexRef.current = Math.round(targetIndexRef.current) - 1
+      }
+    } else {
+      targetIndexRef.current = Math.round(targetIndexRef.current)
+    }
+    touchStartX.current = null
+    touchDeltaX.current = 0
+    resetAutoplayTimer()
+  }
+
+  // Mouse drag handlers for desktop
+  const handleMouseDown = (e: React.MouseEvent) => {
+    isMouseDownRef.current = true
+    isInteractingRef.current = true
+    mouseStartX.current = e.clientX
+    mouseDeltaX.current = 0
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isMouseDownRef.current || mouseStartX.current === null) return
+    mouseDeltaX.current = e.clientX - mouseStartX.current
+  }
+
+  const handleMouseUp = () => {
+    if (!isMouseDownRef.current) return
+    isMouseDownRef.current = false
+    isInteractingRef.current = false
+    if (Math.abs(mouseDeltaX.current) > 40) {
+      if (mouseDeltaX.current < 0) {
+        targetIndexRef.current = Math.round(targetIndexRef.current) + 1
+      } else {
+        targetIndexRef.current = Math.round(targetIndexRef.current) - 1
+      }
+    } else {
+      targetIndexRef.current = Math.round(targetIndexRef.current)
+    }
+    mouseStartX.current = null
+    mouseDeltaX.current = 0
+    resetAutoplayTimer()
   }
 
   const handlePrev = () => {
     targetIndexRef.current = Math.round(targetIndexRef.current) - 1
+    resetAutoplayTimer()
   }
 
   const handleNext = () => {
     targetIndexRef.current = Math.round(targetIndexRef.current) + 1
+    resetAutoplayTimer()
   }
 
-  // The member currently centered — drives the bio panel below the deck
+  const handleSelect = (targetMemberIndex: number) => {
+    const currentWrapped = ((Math.round(targetIndexRef.current) % numCards) + numCards) % numCards
+    let diff = targetMemberIndex - currentWrapped
+    while (diff > numCards / 2) diff -= numCards
+    while (diff < -numCards / 2) diff += numCards
+    targetIndexRef.current = Math.round(targetIndexRef.current) + diff
+    resetAutoplayTimer()
+  }
+
+  // The member currently centered
   const wrappedFrontIndex = ((Math.round(centerIndex) % numCards) + numCards) % numCards
-  const frontMember = team[wrappedFrontIndex]
 
   return (
     <div className="w-full py-6">
@@ -483,9 +618,14 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
         }}
         onMouseLeave={() => {
           isHoveredRef.current = false
+          if (isMouseDownRef.current) handleMouseUp()
         }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         className="relative w-full h-[440px] sm:h-[500px] lg:h-[540px] flex items-center justify-center overflow-hidden select-none cursor-grab active:cursor-grabbing"
         style={{ perspective: '1400px' }}
       >
@@ -498,40 +638,56 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
         {team.map((member, index) => {
           // Shortest signed distance from the center in a wrapping (circular) index space
           let diff = (index - centerIndex) % numCards
-          if (diff > numCards / 2) diff -= numCards
-          if (diff < -numCards / 2) diff += numCards
+          while (diff > numCards / 2) diff -= numCards
+          while (diff < -numCards / 2) diff += numCards
 
           const absDiff = Math.abs(diff)
           const isFront = absDiff < 0.5
 
-          // Tuned spacing & depth transformation matching reference coverflow
-          const spacing = 240
+          // Tuned spacing & continuous depth transformation matching reference coverflow
           const translateX = diff * spacing
-          const lift = isFront ? -15 : 0
+          // Continuous smooth lift: active center card lifts by -16px, neighbors at 0
+          const lift = -16 * Math.max(0, 1 - absDiff)
 
-          const scale = isFront ? 1.05 : Math.max(0.78, 1 - absDiff * 0.12)
-          const opacity = isFront ? 1 : Math.max(0.65, 1 - absDiff * 0.22)
-          const zIndex = isFront ? 100 : 50 - Math.round(absDiff * 10)
+          // Continuous smooth scaling: 1.06 at center, ~0.88 at neighbors, ~0.78 at outer edges
+          const scale = 0.78 + 0.28 * Math.max(0, 1 - absDiff / 2.2) ** 1.6
+
+          // Smooth opacity: 1.0 at center, fading seamlessly to 0 at the extreme rear wrap (absDiff > 2.0)
+          let opacity = 1.0
+          if (absDiff <= 2.0) {
+            opacity = Math.max(0.65, 1 - absDiff * 0.18)
+          } else {
+            const fadeProgress = Math.min(1, Math.max(0, (absDiff - 2.0) / 0.4))
+            opacity = (1 - fadeProgress) * 0.65
+          }
+
+          const zIndex = Math.round(100 - absDiff * 25)
 
           return (
             <div
               key={member.name}
               onClick={() => {
-                targetIndexRef.current = targetIndexRef.current + diff
+                let cardDiff = (index - Math.round(centerIndex)) % numCards
+                while (cardDiff > numCards / 2) cardDiff -= numCards
+                while (cardDiff < -numCards / 2) cardDiff += numCards
+                targetIndexRef.current = Math.round(targetIndexRef.current) + cardDiff
+                resetAutoplayTimer()
               }}
-              className="absolute w-[260px] sm:w-[310px] lg:w-[350px] h-[360px] sm:h-[420px] lg:h-[460px] transition-transform duration-75 ease-out group"
+              className="absolute w-[260px] sm:w-[310px] lg:w-[350px] h-[360px] sm:h-[420px] lg:h-[460px] group cursor-pointer"
               style={{
                 transform: `translate3d(${translateX}px, ${lift}px, 0px) scale(${scale})`,
                 opacity,
                 zIndex,
+                pointerEvents: opacity < 0.2 ? 'none' : 'auto',
               }}
             >
               {/* Premium 3:4 Aspect Ratio Portrait Card */}
               <div
-                className={`relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 bg-slate-900 ${isFront
-                  ? 'shadow-[0_25px_60px_rgba(0,0,0,0.3),0_0_35px_rgba(150,34,40,0.25)] border-2 border-[#962228]'
-                  : 'shadow-[0_15px_35px_rgba(0,0,0,0.15)] border border-slate-300/80 hover:border-slate-400'
-                  }`}
+                className={`relative w-full h-full rounded-3xl overflow-hidden transition-all duration-500 bg-slate-900 ${
+                  isFront
+                    ? 'shadow-[0_25px_60px_rgba(0,0,0,0.3),0_0_35px_rgba(150,34,40,0.25)] border-2 border-[#962228]'
+                    : 'shadow-[0_15px_35px_rgba(0,0,0,0.15)] border border-slate-300/80 hover:border-slate-400'
+                }`}
               >
                 {/* Full Uncropped Photo */}
                 <Image
@@ -542,35 +698,53 @@ const LeadershipWheel = ({ team }: { team: TeamMember[] }) => {
                   sizes="350px"
                   priority={isFront}
                 />
-
-                {/* Bottom Gradient Overlay for Text Clarity */}
-                <div className="absolute inset-x-0 bottom-0 pt-24 pb-6 px-6 bg-gradient-to-t from-black/95 via-black/50 to-transparent flex flex-col justify-end text-left">
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-[#e63946] mb-1 font-outfit">
-                    {member.role}
-                  </span>
-                  <h3 className="text-white font-extrabold text-xl sm:text-2xl font-plus-jakarta tracking-tight">
-                    {member.name}
-                  </h3>
-                </div>
               </div>
             </div>
           )
         })}
       </div>
 
-      {/* Navigation Arrow Controls matching reference design */}
-      <div className="flex items-center justify-center gap-4 mt-2">
+      {/* Navigation Arrow Controls & Member Indicator Dots */}
+      <div 
+        className="flex items-center justify-center gap-4 sm:gap-6 mt-4"
+        onMouseEnter={() => {
+          isHoveredRef.current = true
+        }}
+        onMouseLeave={() => {
+          isHoveredRef.current = false
+        }}
+      >
         <button
           onClick={handlePrev}
           aria-label="Previous Team Member"
-          className="w-12 h-12 rounded-full bg-white/80 border border-slate-300 shadow-md backdrop-blur-md flex items-center justify-center text-slate-800 hover:bg-[#962228] hover:text-white hover:border-[#962228] transition-all duration-300 group cursor-pointer"
+          className="w-11 h-11 rounded-full bg-white/80 border border-slate-300 shadow-md backdrop-blur-md flex items-center justify-center text-slate-800 hover:bg-[#962228] hover:text-white hover:border-[#962228] transition-all duration-300 group cursor-pointer"
         >
           <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
         </button>
+
+        {/* 5 Indicator Pills for the 5 Team Members */}
+        <div className="flex items-center gap-2">
+          {team.map((member, i) => {
+            const isActive = i === wrappedFrontIndex
+            return (
+              <button
+                key={member.name}
+                onClick={() => handleSelect(i)}
+                aria-label={`View ${member.name} - ${member.role}`}
+                className={`h-2.5 rounded-full transition-all duration-500 cursor-pointer ${
+                  isActive
+                    ? 'w-7 bg-[#962228] shadow-[0_0_10px_rgba(150,34,40,0.4)]'
+                    : 'w-2.5 bg-slate-400/50 hover:bg-slate-500'
+                }`}
+              />
+            )
+          })}
+        </div>
+
         <button
           onClick={handleNext}
           aria-label="Next Team Member"
-          className="w-12 h-12 rounded-full bg-white/80 border border-slate-300 shadow-md backdrop-blur-md flex items-center justify-center text-slate-800 hover:bg-[#962228] hover:text-white hover:border-[#962228] transition-all duration-300 group cursor-pointer"
+          className="w-11 h-11 rounded-full bg-white/80 border border-slate-300 shadow-md backdrop-blur-md flex items-center justify-center text-slate-800 hover:bg-[#962228] hover:text-white hover:border-[#962228] transition-all duration-300 group cursor-pointer"
         >
           <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
         </button>
@@ -604,10 +778,51 @@ const SPARKLE_POSITIONS = [
 ]
 
 export default function AboutPage() {
+  const { language, t } = useLanguage()
+  const values = language === 'DE' ? valuesDE : valuesEN
+
+  const currentTeam: TeamMember[] = [
+    {
+      initials: 'ND',
+      name: 'Nagaraj Deivanayagam',
+      role: t.about.roles.nagaraj,
+      photo: '/images/team-1.png',
+      bio: 'Leading strategic technology initiatives, managing operational team workflows, and driving high-quality software engineering execution.',
+    },
+    {
+      initials: 'PB',
+      name: 'Pooja Babu',
+      role: t.about.roles.pooja,
+      photo: '/images/team-2.png',
+      bio: 'Coordinating cross-functional engineering teams, facilitating technical delivery, and ensuring project milestones meet international quality standards.',
+    },
+    {
+      initials: 'PA',
+      name: 'Parvathy Ajitha',
+      role: t.about.roles.parvathy,
+      photo: '/images/team-3.png',
+      bio: 'Guiding core software engineering teams, overseeing daily technical operations, and driving project quality across client engagements.',
+    },
+    {
+      initials: 'RS',
+      name: 'Reshma Suresh',
+      role: t.about.roles.reshma,
+      photo: '/images/team-4.png',
+      bio: 'Managing human resource management, operational strategy, organizational growth, and talent development across ESC.',
+    },
+    {
+      initials: 'SA',
+      name: 'Soumya Arayilvalapil',
+      role: t.about.roles.soumya,
+      photo: '/images/team-5.png',
+      bio: 'Leading technical delivery units, orchestrating software development workflows, and maintaining rigorous QA standards.',
+    },
+  ]
+
   return (
     <PageTransition>
       {/* Who We Are - ESC doorway hero */}
-      <section className="relative pt-40 pb-32 overflow-hidden min-h-[60vh] flex items-center justify-start text-left bg-gradient-to-br from-slate-100 via-slate-200/60 to-slate-100">
+      <section className="esc-hero-section relative overflow-hidden flex items-center justify-start text-left bg-gradient-to-br from-slate-100 via-slate-200/60 to-slate-100">
         {/* Background image — ESC keyboard image first, then silver overlay */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -636,32 +851,34 @@ export default function AboutPage() {
         ))}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex justify-end">
-          <div className="max-w-2xl text-right">
+          <div className="max-w-xl sm:max-w-2xl lg:max-w-[46rem] text-right">
             <AnimateOnScroll direction="up">
-              <div className="flex items-center justify-end gap-2 mb-8">
-                <span className="text-sm font-semibold tracking-[0.2em] uppercase text-slate-600 font-outfit">
-                  Who We Are
+              <div className="flex items-center justify-end gap-2 mb-4 sm:mb-6">
+                <span className="text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase text-slate-600 font-outfit">
+                  {t.about.heroBadge}
                 </span>
                 <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
               </div>
-              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-light text-slate-900 mb-8 tracking-tight font-plus-jakarta">
-                About{' '}
+              <h1 className="text-5xl sm:text-7xl lg:text-8xl font-light text-slate-900 mb-5 sm:mb-7 leading-[1.05] tracking-tight font-plus-jakarta">
+                {t.about.heroTitlePre}{' '}
                 <span className="font-extrabold" style={{ color: '#962228' }}>
-                  ESC
+                  {t.about.heroTitleHighlight}
                 </span>
               </h1>
-              <p className="text-slate-950 text-xl sm:text-2xl leading-relaxed font-semibold mb-12 drop-shadow-sm">
-                A specialized Indo-German technology partner delivering mission-critical software, AI diagnostics, and RPA automation to global Energy and Water networks.
+              <p className="text-slate-950 text-lg sm:text-xl lg:text-2xl leading-relaxed font-semibold mb-6 sm:mb-10 drop-shadow-sm">
+                {t.about.heroSubtitle}
               </p>
 
               {/* Scroll down indicator */}
               <motion.div
                 animate={{ y: [0, 8, 0] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="flex flex-col items-end justify-end text-slate-500 mt-16"
+                className="flex flex-col items-end justify-end text-slate-500 mt-6 sm:mt-10"
               >
-                <span className="text-xs uppercase tracking-widest mb-3 font-outfit font-bold text-slate-600">Scroll To Explore</span>
-                <div className="w-[2px] h-12 bg-gradient-to-b from-[#962228] to-transparent" />
+                <span className="text-xs uppercase tracking-widest mb-2 sm:mb-3 font-outfit font-bold text-slate-600">
+                  {t.about.scrollPrompt}
+                </span>
+                <div className="w-[2px] h-10 sm:h-12 bg-gradient-to-b from-[#962228] to-transparent" />
               </motion.div>
             </AnimateOnScroll>
           </div>
@@ -691,12 +908,12 @@ export default function AboutPage() {
             <div className="flex items-center gap-2 mb-6">
               <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
               <span className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-600">
-                Our Mission
+                {t.about.missionBadge}
               </span>
             </div>
 
             <h2 className="text-5xl sm:text-6xl font-light text-gray-900 mb-8 leading-tight font-['Sora',sans-serif]">
-              Powering the{' '}
+              {t.about.missionTitlePre}{' '}
               <motion.span
                 className="font-bold"
                 style={{ color: '#962228' }}
@@ -704,9 +921,9 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                digital future
+                {t.about.missionTitleHighlight}
               </motion.span>{' '}
-              of critical infrastructure
+              {t.about.missionTitlePost}
             </h2>
 
             <div className="grid lg:grid-cols-1 gap-8 max-w-4xl">
@@ -716,11 +933,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                ESC Utility Services was founded with a singular focus — to help Energy and Water
-                organizations navigate the complexity of digital transformation without losing sight
-                of what matters most: reliability, safety, and operational continuity. From our
-                offices in India and Germany, we serve clients across Europe and Asia, delivering
-                technology solutions that are as robust as the infrastructure they support.
+                {t.about.missionP1}
               </motion.p>
             </div>
           </motion.div>
@@ -737,14 +950,11 @@ export default function AboutPage() {
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200 shadow-sm mb-4">
               <span className="w-2 h-2 rounded-full bg-[#962228] animate-pulse" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#962228] font-outfit">
-                Technology We Work With
+                {t.about.techBadge}
               </span>
             </div>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-[1.15] tracking-tight font-plus-jakarta">
-              Our{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
-                Tech Stack
-              </span>
+              {t.about.techTitle}
             </h2>
           </AnimateOnScroll>
 
@@ -804,7 +1014,7 @@ export default function AboutPage() {
             <div className="flex items-center gap-2 mb-6">
               <div className="w-8 h-[2px]" style={{ backgroundColor: '#e0575f' }} />
               <span className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-400">
-                The People Behind ESC
+                {t.about.leadershipBadge}
               </span>
             </div>
             <motion.h2
@@ -813,7 +1023,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              Meet Our{' '}
+              {t.about.leadershipTitlePre}{' '}
               <motion.span
                 className="font-bold text-transparent bg-clip-text"
                 style={{ backgroundImage: 'linear-gradient(90deg, #962228 0%, #e0575f 100%)' }}
@@ -821,20 +1031,12 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
-                Leadership Team
+                {t.about.leadershipTitleHighlight}
               </motion.span>
             </motion.h2>
-            <motion.p
-              className="text-lg text-gray-400 mt-4 max-w-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              Visionary leaders driving innovation across energy and water infrastructure technology.
-            </motion.p>
           </AnimateOnScroll>
 
-          <LeadershipWheel team={team} />
+          <LeadershipWheel team={currentTeam} />
         </div>
       </section>
 

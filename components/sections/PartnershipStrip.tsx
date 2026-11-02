@@ -2,23 +2,24 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { ShieldCheck, Lock, Sparkles } from 'lucide-react'
+import { ShieldCheck, Lock } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface PartnershipStripProps {
   variant?: 'default' | 'thin'
 }
 
-const ismsHighlights = [
-  { icon: ShieldCheck, title: 'ISO/IEC 27001:2022', desc: 'Information Security Certified' },
-  { icon: Lock, title: 'GDPR & EU Compliant', desc: 'Strict European Data Privacy' },
-  { icon: Sparkles, title: 'Indo-German Model', desc: 'European Standard Delivery' },
-]
-
 export default function PartnershipStrip({ variant = 'default' }: PartnershipStripProps) {
+  const { t } = useLanguage()
   const isThin = variant === 'thin'
 
+  const ismsHighlights = [
+    { icon: ShieldCheck, title: t.home.partnership.badgeIsoTitle, desc: t.home.partnership.badgeIsoDesc },
+    { icon: Lock, title: t.home.partnership.badgeGdprTitle, desc: t.home.partnership.badgeGdprDesc },
+  ]
+
   return (
-    <section className={`relative bg-gradient-to-r from-[#420b10] via-[#801b21] to-[#4c0d12] ${isThin ? 'py-10 sm:py-12' : 'py-8 lg:py-10'} overflow-hidden border-y border-[#e63946]/40 shadow-[0_0_50px_rgba(150,34,40,0.4)]`}>
+    <section className={`relative bg-gradient-to-r from-[#420b10] via-[#801b21] to-[#4c0d12] ${isThin ? 'py-10 sm:py-12' : 'py-8 lg:py-10'} overflow-hidden border-y border-[#e63946]/40`}>
       
       {/* Background Ambient Spotlights & Particle Glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -61,7 +62,7 @@ export default function PartnershipStrip({ variant = 'default' }: PartnershipStr
             className="flex flex-col items-center gap-7 w-full max-w-5xl"
           >
             {/* Top Badges Row with Original Clean Icons */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 w-full">
               {ismsHighlights.map((item) => {
                 const ItemIcon = item.icon
                 return (
@@ -81,7 +82,7 @@ export default function PartnershipStrip({ variant = 'default' }: PartnershipStr
               })}
             </div>
 
-            {/* Middle Certificate Showcase Box (Below Badges, Bigger Image + View More Button) */}
+            {/* Middle Certificate Showcase Box */}
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-5 sm:p-6 rounded-2xl bg-white/[0.06] border border-white/15 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.25)] w-full">
               {/* Left Certificate Image & Info */}
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 text-center sm:text-left">
@@ -91,7 +92,7 @@ export default function PartnershipStrip({ variant = 'default' }: PartnershipStr
                   title="Click to view full certificate"
                 >
                   <Image
-                    src="/images/isms certificate.png"
+                    src="/images/isms-certificate.png"
                     alt="ISO/IEC 27001:2022 Certificate"
                     fill
                     className="object-contain p-1.5 group-hover:scale-105 transition-transform duration-300"
@@ -105,13 +106,13 @@ export default function PartnershipStrip({ variant = 'default' }: PartnershipStr
 
                 <div>
                   <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-400/15 border border-amber-300/30 text-amber-300 text-[10px] font-mono font-bold tracking-widest uppercase mb-1.5">
-                    Official ISO/IEC 27001:2022
+                    {t.home.partnership.isoBadge}
                   </div>
                   <h3 className="text-base sm:text-lg font-bold text-white font-plus-jakarta tracking-tight">
-                    Information Security Management System (ISMS)
+                    {t.home.partnership.ismsTitle}
                   </h3>
                   <p className="text-xs sm:text-sm text-red-100/85 font-light max-w-lg mt-1.5 leading-relaxed">
-                    Our audited Information Security Management System guarantees enterprise-grade security, data protection, and operational resilience across all software and IT operations.
+                    {t.home.partnership.ismsDesc}
                   </p>
                 </div>
               </div>
@@ -121,7 +122,7 @@ export default function PartnershipStrip({ variant = 'default' }: PartnershipStr
                 href="/certifications"
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400 hover:from-amber-200 hover:to-amber-300 transition-all duration-300 shadow-[0_4px_20px_rgba(255,204,0,0.3)] hover:scale-105 font-outfit shrink-0"
               >
-                <span>View Certification</span>
+                <span>{t.home.partnership.viewCert}</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
@@ -151,7 +152,7 @@ export default function PartnershipStrip({ variant = 'default' }: PartnershipStr
                   />
                 </div>
                 <span className="mt-1.5 text-[11px] font-semibold tracking-[0.2em] uppercase text-red-100 group-hover:text-amber-300 transition-colors font-outfit">
-                  India
+                  {t.home.partnership.india}
                 </span>
               </div>
 
@@ -176,7 +177,7 @@ export default function PartnershipStrip({ variant = 'default' }: PartnershipStr
                   />
                 </div>
                 <span className="mt-1.5 text-[11px] font-semibold tracking-[0.2em] uppercase text-red-100 group-hover:text-yellow-300 transition-colors font-outfit">
-                  Germany
+                  {t.home.partnership.germany}
                 </span>
               </div>
             </motion.div>
@@ -190,17 +191,13 @@ export default function PartnershipStrip({ variant = 'default' }: PartnershipStr
               className="text-center lg:text-left max-w-2xl"
             >
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light text-white leading-tight mb-3 font-outfit">
-                A bridge between{' '}
+                {t.home.partnership.headingPre}{' '}
                 <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-white to-red-100 drop-shadow-sm">
-                  Indian engineering talent
-                </span>{' '}
-                and{' '}
-                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-white to-red-100 drop-shadow-sm">
-                  German industrial standards
+                  {t.home.partnership.headingHighlight}
                 </span>
               </h2>
               <p className="text-red-100/90 text-sm sm:text-base leading-relaxed font-light">
-                Our Indo-German model combines cost-effective delivery with European precision — giving Energy and Water organizations the best of both worlds.
+                {t.home.partnership.desc}
               </p>
             </motion.div>
           </div>

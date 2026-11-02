@@ -1,6 +1,11 @@
+'use client'
+
 import Link from 'next/link'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function CTAStrip() {
+  const { t } = useLanguage()
+
   return (
     <section className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,21 +36,20 @@ export default function CTAStrip() {
             <div className="flex items-center justify-center gap-2 mb-6">
               <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
               <span className="text-xs font-semibold tracking-[0.2em] uppercase text-gray-400">
-                Let's Talk
+                {t.home.cta.badge}
               </span>
               <div className="w-8 h-[2px]" style={{ backgroundColor: '#962228' }} />
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white leading-tight mb-4 max-w-2xl mx-auto">
-              Ready to modernize your{' '}
+              {t.home.cta.headingPre}{' '}
               <span className="font-bold" style={{ color: '#962228' }}>
-                energy infrastructure?
+                {t.home.cta.headingHighlight}
               </span>
             </h2>
 
             <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-              Talk to our team — no sales pitch, just an honest conversation
-              about your challenges and how we can help.
+              {t.home.cta.desc}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
@@ -54,13 +58,13 @@ export default function CTAStrip() {
                 className="px-8 py-3 text-sm font-semibold text-white rounded-md transition-all hover:opacity-90 hover:shadow-lg hover:shadow-red-900/30"
                 style={{ backgroundColor: '#962228' }}
               >
-                Get in Touch
+                {t.home.cta.btnContact}
               </Link>
               <Link
                 href="/services"
                 className="px-8 py-3 text-sm font-semibold text-gray-300 rounded-md border border-gray-600 hover:border-gray-400 hover:text-white transition-all"
               >
-                Explore Services
+                {t.home.cta.btnServices}
               </Link>
             </div>
           </div>

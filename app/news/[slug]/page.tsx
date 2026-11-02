@@ -4,6 +4,7 @@ import { useEffect, useState, use } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, ArrowLeft, Building2, UserCircle2, Clock } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext'
 import CTAStrip from '@/components/sections/CTAStrip'
 import PageTransition from '@/components/ui/PageTransition'
 
@@ -21,6 +22,8 @@ interface NewsItem {
 
 export default function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params)
+  const { language } = useLanguage()
+  const isDE = language === 'DE'
   const [article, setArticle] = useState<NewsItem | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -45,7 +48,7 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
   if (loading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <p className="text-gray-400">Loading announcement...</p>
+        <p className="text-gray-400">{isDE ? 'Meldung wird geladen...' : 'Loading announcement...'}</p>
       </div>
     )
   }
@@ -53,11 +56,17 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
   if (!article) {
     return (
       <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4">
-        <h1 className="text-3xl font-bold mb-4">News Release Not Found</h1>
-        <p className="text-gray-400 mb-8">The requested announcement could not be found or has been removed.</p>
+        <h1 className="text-3xl font-bold mb-4">
+          {isDE ? 'Pressemitteilung nicht gefunden' : 'News Release Not Found'}
+        </h1>
+        <p className="text-gray-400 mb-8">
+          {isDE
+            ? 'Die angeforderte Meldung konnte nicht gefunden werden oder wurde entfernt.'
+            : 'The requested announcement could not be found or has been removed.'}
+        </p>
         <Link href="/news" className="px-6 py-3 rounded-xl bg-red-600 text-white font-semibold flex items-center space-x-2">
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to All News</span>
+          <span>{isDE ? 'Zurück zu allen Neuigkeiten' : 'Back to All News'}</span>
         </Link>
       </div>
     )
@@ -72,7 +81,7 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
             className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-gray-400 hover:text-white mb-8 transition"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to All News</span>
+            <span>{isDE ? 'Zurück zu allen Neuigkeiten' : 'Back to All News'}</span>
           </Link>
 
           {/* Header */}
@@ -118,9 +127,9 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
           <div className="mt-12 pt-8 border-t border-white/10 flex items-center justify-between text-xs text-gray-400">
             <span className="flex items-center gap-1.5">
               <UserCircle2 size={16} />
-              Published by ESC Editorial Team
+              {isDE ? 'Veröffentlicht vom ESC-Redaktionsteam' : 'Published by ESC Editorial Team'}
             </span>
-            <span>ESC Utility Services</span>
+            <span>ESC Utility Services Pvt.Ltd</span>
           </div>
         </div>
       </article>

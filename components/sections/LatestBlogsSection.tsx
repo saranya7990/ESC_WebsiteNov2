@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface BlogPost {
   id: string
@@ -17,7 +18,7 @@ interface BlogPost {
   coverImageUrl?: string | null
 }
 
-const defaultBlogs: BlogPost[] = [
+const defaultBlogsEN: BlogPost[] = [
   {
     id: '1',
     slug: 'generative-ai-energy-sector',
@@ -60,10 +61,58 @@ const defaultBlogs: BlogPost[] = [
   },
 ]
 
+const defaultBlogsDE: BlogPost[] = [
+  {
+    id: '1',
+    slug: 'generative-ai-energy-sector',
+    category: 'Generative KI',
+    date: '28. Juli 2026',
+    readTime: '5 Min. Lesezeit',
+    title: 'Wie Generative KI die Energiewirtschaft transformiert',
+    excerpt: 'Von vorausschauender Wartung bis hin zu automatisierten Berichten verändert generative KI die Abläufe von Versorgern.',
+    coverImageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: '2',
+    slug: 'intelligent-automation-water-utilities',
+    category: 'Automatisierung',
+    date: '15. Juli 2026',
+    readTime: '4 Min. Lesezeit',
+    title: 'Intelligente Automatisierung für Wasserversorger – Ein Praxisleitfaden',
+    excerpt: 'Wasserversorger stehen vor besonderen Herausforderungen. Wir zeigen, wie intelligente Automatisierung Kosten senkt.',
+    coverImageUrl: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: '3',
+    slug: 'modern-scada-ot-integration',
+    category: 'Software-Engineering',
+    date: '30. Juni 2026',
+    readTime: '6 Min. Lesezeit',
+    title: 'Moderne SCADA- & OT-Systemintegration für europäische Stromnetze',
+    excerpt: 'Integration historischer SCADA-Infrastrukturen mit cloud-nativen Microservices zur Echtzeit-Netzüberwachung.',
+    coverImageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    id: '4',
+    slug: 'cybersecurity-iso27001-utility-infrastructure',
+    category: 'IT-Sicherheit',
+    date: '12. Juni 2026',
+    readTime: '5 Min. Lesezeit',
+    title: 'Cybersicherheit & ISO 27001 in kritischen Versorgerinfrastrukturen',
+    excerpt: 'Wichtige Strategien zur Umsetzung von ISMS-Standards in Energienetzen und geschäftskritischen IT-Betrieben.',
+    coverImageUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
+  },
+]
+
 export default function LatestBlogsSection() {
-  const [blogs, setBlogs] = useState<BlogPost[]>(defaultBlogs)
+  const { language, t } = useLanguage()
+  const [blogs, setBlogs] = useState<BlogPost[]>(language === 'DE' ? defaultBlogsDE : defaultBlogsEN)
   const [activeIndex, setActiveIndex] = useState(0)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setBlogs(language === 'DE' ? defaultBlogsDE : defaultBlogsEN)
+  }, [language])
 
   useEffect(() => {
     async function fetchPublicBlogs() {
@@ -106,7 +155,7 @@ export default function LatestBlogsSection() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 w-full max-w-4xl mb-4">
           <div className="w-full text-center sm:text-left">
             <h2 className="text-xl sm:text-2xl font-light text-slate-900 tracking-tight font-plus-jakarta">
-              Our Latest <span className="font-bold text-[#962228]">Blogs</span>
+              {t.home.latestBlogs.heading} <span className="font-bold text-[#962228]">{t.home.latestBlogs.headingHighlight}</span>
             </h2>
           </div>
 
@@ -178,7 +227,7 @@ export default function LatestBlogsSection() {
                     href={`/blog/${post.slug}`}
                     className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-slate-800 group-hover:text-[#962228] transition-colors font-outfit"
                   >
-                    <span>Read Blog</span>
+                    <span>{t.home.latestBlogs.readBlog}</span>
                     <ArrowRight className="w-3 h-3 text-current group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 </div>
@@ -188,23 +237,13 @@ export default function LatestBlogsSection() {
           ))}
         </div>
 
-        {/* Centered Dots */}
+        {/* Centered Indicator Dots */}
         <div className="flex items-center justify-center gap-1 mt-3">
-          {blogs.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                if (!scrollContainerRef.current) return
-                scrollContainerRef.current.scrollTo({
-                  left: i * 260,
-                  behavior: 'smooth',
-                })
-              }}
-              aria-label={`Go to slide ${i + 1}`}
-              className={`transition-all duration-300 rounded-full ${
-                i === activeIndex
-                  ? 'w-3.5 h-1 bg-[#962228]'
-                  : 'w-1 h-1 bg-slate-300 hover:bg-slate-400'
+          {blogs.map((_, dotIdx) => (
+            <div
+              key={dotIdx}
+              className={`h-1 rounded-full transition-all duration-300 ${
+                dotIdx === activeIndex ? 'w-4 bg-[#962228]' : 'w-1.5 bg-slate-300'
               }`}
             />
           ))}

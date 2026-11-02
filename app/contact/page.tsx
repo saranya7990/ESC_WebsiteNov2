@@ -10,23 +10,24 @@ import {
   ArrowRight,
   ExternalLink,
   Clock,
-  Globe2,
   CheckCircle2,
   Sparkles,
-  Building2,
   UserCheck,
 } from 'lucide-react'
 import PageTransition from '@/components/ui/PageTransition'
 import AnimateOnScroll from '@/components/ui/AnimateOnScroll'
 import CTAStrip from '@/components/sections/CTAStrip'
+import { useLanguage } from '@/context/LanguageContext'
 
 type LocationKey = 'india' | 'germany'
 
 interface LocationDetails {
   id: LocationKey
-  label: string
+  labelEN: string
+  labelDE: string
   flag: string
-  officeName: string
+  officeNameEN: string
+  officeNameDE: string
   addressLines: string[]
   email?: string
   phone: string
@@ -39,9 +40,11 @@ interface LocationDetails {
 const LOCATIONS: Record<LocationKey, LocationDetails> = {
   india: {
     id: 'india',
-    label: 'INDIA',
+    labelEN: 'INDIA',
+    labelDE: 'INDIEN',
     flag: '🇮🇳',
-    officeName: 'ESC Utility Services Pvt. Ltd.',
+    officeNameEN: 'ESC Utility Services Pvt.Ltd',
+    officeNameDE: 'ESC Utility Services Pvt.Ltd',
     addressLines: [
       'Module 2605, 6th Floor',
       'Yamuna Building',
@@ -52,9 +55,6 @@ const LOCATIONS: Record<LocationKey, LocationDetails> = {
     email: 'support@esc-ind.com',
     phone: '+91 8086 22 8000',
     mapsUrl: 'https://maps.google.com/?q=Yamuna+Building+Technopark+Phase+3+Trivandrum+Kerala+India',
-    // Google retired the free keyless "output=embed" iframe trick this used
-    // to rely on (it now 404s for every query, with or without an API key).
-    // Using OpenStreetMap's embed instead — free, no key required.
     embedMapUrl:
       'https://www.openstreetmap.org/export/embed.html?bbox=76.8717,8.5514,76.8877,8.5634&layer=mapnik&marker=8.5574,76.8797',
     coordinates: '8.5574° N, 76.8797° E',
@@ -62,9 +62,11 @@ const LOCATIONS: Record<LocationKey, LocationDetails> = {
   },
   germany: {
     id: 'germany',
-    label: 'GERMANY',
+    labelEN: 'GERMANY',
+    labelDE: 'DEUTSCHLAND',
     flag: '🇩🇪',
-    officeName: 'Group Head Office',
+    officeNameEN: 'Group Head Office',
+    officeNameDE: 'Konzernzentrale Deutschland',
     addressLines: [
       'Goltsteinstraße 30–31',
       '40211 Düsseldorf',
@@ -79,41 +81,8 @@ const LOCATIONS: Record<LocationKey, LocationDetails> = {
   },
 }
 
-interface ManagingDirector {
-  name: string
-  role: string
-  location: string
-  photo: string
-  email: string
-  tel?: string
-  mobile?: string
-  bio: string
-}
-
-const MANAGING_DIRECTORS: ManagingDirector[] = [
-  {
-    name: 'Manoj Nirmala Sukumaran',
-    role: 'Managing Director',
-    location: '🇮🇳 India Office',
-    photo: '/images/Manoj.jpeg',
-    email: 'info@esc-ind.com',
-    tel: '+91 (471) 4066 071 / 072',
-    mobile: '+91 9745211788',
-    bio: 'Directing strategic business development, executive operations, and Indo-German utility partnerships for European and Asian markets.',
-  },
-  {
-    name: 'Matthias Ulrich Niederprüm',
-    role: 'Chairman & Director',
-    location: '🇩🇪 Germany Head Office',
-    photo: '/images/Matthias.jpg',
-    email: 'info@esc-ind.com',
-    tel: '+49 (211) 138 66 454',
-    mobile: '+49 (0) 177 4726469',
-    bio: 'Leading high-level governance, technological strategy, and enterprise infrastructure management for critical energy and water clients.',
-  },
-]
-
 export default function ContactPage() {
+  const { t, language } = useLanguage()
   const [activeLocation, setActiveLocation] = useState<LocationKey>('india')
   const [formData, setFormData] = useState({
     name: '',
@@ -146,59 +115,80 @@ export default function ContactPage() {
   }
 
   const currentLocation = LOCATIONS[activeLocation]
+  const currentLabel = language === 'DE' ? currentLocation.labelDE : currentLocation.labelEN
+  const currentOfficeName = language === 'DE' ? currentLocation.officeNameDE : currentLocation.officeNameEN
+
+  const managingDirectors = [
+    {
+      name: 'Matthias Ulrich Niederprüm',
+      role: language === 'DE' ? 'Vorsitzender & Geschäftsführer' : 'Chairman & Director',
+      location: language === 'DE' ? '🇩🇪 Deutschland Hauptsitz' : '🇩🇪 Germany Head Office',
+      photo: '/images/Matthias.jpg',
+      objectPosition: 'object-top',
+      email: 'ceo@esc-ind.com',
+      bio: language === 'DE'
+        ? 'Verantwortet Unternehmensführung, technologische Strategie und das Management von Unternehmensinfrastrukturen für führende Energie- und Wasserkunden.'
+        : 'Leading high-level governance, technological strategy, and enterprise infrastructure management for critical energy and water clients.',
+    },
+    {
+      name: 'Manoj Nirmala Sukumaran',
+      role: language === 'DE' ? 'Geschäftsführer' : 'Managing Director',
+      location: language === 'DE' ? '🇮🇳 Indien Standort' : '🇮🇳 India Office',
+      photo: '/images/Manoj.jpeg?v=3',
+      objectPosition: 'object-top',
+      email: 'ceo@esc-ind.com',
+      bio: language === 'DE'
+        ? 'Leitet die strategische Geschäftsentwicklung, das operative Management und deutsch-indische Partnerschaften für europäische und asiatische Märkte.'
+        : 'Directing strategic business development, executive operations, and Indo-German utility partnerships for European and Asian markets.',
+    },
+  ]
 
   return (
     <PageTransition>
       <div className="w-full bg-gradient-to-b from-[#e2e8f0] via-[#f1f5f9] to-[#cbd5e1] text-slate-900 overflow-hidden">
         
         {/* ========================================================================= */}
-        {/* 1. HERO SECTION (Silverish Modern Theme) */}
+        {/* 1. HERO SECTION */}
         {/* ========================================================================= */}
-        <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden border-b border-slate-300/80">
-          {/* Silverish Metallic Light & Grid Reflection */}
+        <section className="esc-hero-section relative flex items-center overflow-hidden border-b border-slate-300/80">
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {/* Top Metallic Light Beam */}
             <div
               className="absolute -top-32 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] rounded-full opacity-60 blur-[130px]"
               style={{
                 background: 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(226,232,240,0.7) 60%, transparent 100%)',
               }}
             />
-
-            {/* Central Crimson Glow Accent */}
             <div
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full opacity-15 blur-[140px]"
               style={{ background: 'radial-gradient(circle, rgba(150,34,40,0.6) 0%, transparent 70%)' }}
             />
-
-            {/* Silver Mesh Pattern */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] bg-[size:3.5rem_3.5rem] [mask-image:radial-gradient(ellipse_75%_65%_at_50%_45%,#000_70%,transparent_100%)]" />
           </div>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <AnimateOnScroll direction="up" className="max-w-3xl">
               {/* Location Badge */}
-              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/90 border border-slate-300 shadow-sm mb-8 backdrop-blur-md">
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/90 border border-slate-300 shadow-sm mb-6 backdrop-blur-md">
                 <span className="flex h-2 w-2 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#962228] opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-[#962228]"></span>
                 </span>
                 <span className="text-xs font-bold tracking-[0.25em] uppercase text-[#962228] font-outfit">
-                  Global Presence &bull; India &middot; Germany
+                  {t.contact.heroBadge}
                 </span>
               </div>
 
               {/* Main Title */}
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6 font-plus-jakarta">
-                Let&apos;s Start a{' '}
+                {t.contact.heroTitlePre}{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#962228] via-[#e63946] to-red-700">
-                  Conversation.
+                  {t.contact.heroTitleHighlight}
                 </span>
               </h1>
 
               {/* Supporting Text */}
               <p className="text-lg sm:text-xl text-slate-700 font-light leading-relaxed max-w-2xl">
-                Connect with ESC and discover how our teams can support your next challenge in utility software, digital transformation, and intelligent automation.
+                {t.contact.heroSubtitle}
               </p>
             </AnimateOnScroll>
           </div>
@@ -209,7 +199,7 @@ export default function ContactPage() {
         {/* ========================================================================= */}
         <section className="py-12 bg-white/60 border-b border-slate-300/80 backdrop-blur-md relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               
               {/* Email Card */}
               <motion.a
@@ -222,7 +212,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <span className="text-[11px] font-bold tracking-widest uppercase text-slate-500 font-outfit block">
-                    Email Support
+                    {t.contact.emailSupport}
                   </span>
                   <span className="text-base font-bold text-slate-900 group-hover:text-[#962228] transition-colors font-plus-jakarta">
                     support@esc-ind.com
@@ -241,7 +231,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <span className="text-[11px] font-bold tracking-widest uppercase text-slate-500 font-outfit block">
-                    Phone Direct
+                    {t.contact.phoneDirect}
                   </span>
                   <span className="text-base font-bold text-slate-900 group-hover:text-[#962228] transition-colors font-plus-jakarta font-mono">
                     +91 8086 22 8000
@@ -249,39 +239,24 @@ export default function ContactPage() {
                 </div>
               </motion.a>
 
-              {/* Response Time Card */}
-              <div className="p-6 rounded-2xl bg-white/80 border border-slate-300/90 shadow-sm flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-700 flex-shrink-0">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[11px] font-bold tracking-widest uppercase text-slate-500 font-outfit block">
-                    Response Commitment
-                  </span>
-                  <span className="text-base font-bold text-slate-900 font-plus-jakarta">
-                    Within 1 Business Day
-                  </span>
-                </div>
-              </div>
-
             </div>
           </div>
         </section>
 
         {/* ========================================================================= */}
-        {/* 3. INTERACTIVE LOCATION & EMBEDDED MAP VIEWPORT ("Explore Our Locations") */}
+        {/* 3. INTERACTIVE LOCATION & EMBEDDED MAP VIEWPORT */}
         {/* ========================================================================= */}
         <section className="py-20 bg-gradient-to-b from-white/70 via-slate-100/80 to-white/70 relative border-b border-slate-300/80">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll direction="up" className="mb-10 text-center max-w-2xl mx-auto">
               <span className="text-xs font-bold tracking-[0.25em] uppercase text-[#962228] font-outfit block mb-2">
-                Global Facilities
+                {t.contact.facilitiesBadge}
               </span>
               <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight font-plus-jakarta mb-3">
-                Explore Our Locations
+                {t.contact.facilitiesTitle}
               </h2>
               <p className="text-slate-600 text-sm sm:text-base font-normal">
-                One connected team, working seamlessly across borders to deliver German engineering standards with Indian technical agility.
+                {t.contact.facilitiesSubtitle}
               </p>
             </AnimateOnScroll>
 
@@ -289,6 +264,7 @@ export default function ContactPage() {
             <div className="flex items-center justify-center gap-3 mb-10">
               {(Object.keys(LOCATIONS) as LocationKey[]).map((key) => {
                 const loc = LOCATIONS[key]
+                const label = language === 'DE' ? loc.labelDE : loc.labelEN
                 const isActive = activeLocation === key
                 return (
                   <button
@@ -301,7 +277,7 @@ export default function ContactPage() {
                     }`}
                   >
                     <span>{loc.flag}</span>
-                    <span>{loc.label}</span>
+                    <span>{label}</span>
                     {isActive && (
                       <motion.div
                         layoutId="activeLocationTab"
@@ -339,10 +315,10 @@ export default function ContactPage() {
                       </div>
 
                       <span className="text-xs font-black tracking-[0.2em] uppercase text-red-600 font-outfit block mb-1">
-                        {currentLocation.label} OFFICE
+                        {currentLabel} {language === 'DE' ? 'STANDORT' : 'OFFICE'}
                       </span>
                       <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-plus-jakarta mb-6">
-                        {currentLocation.officeName}
+                        {currentOfficeName}
                       </h3>
 
                       {/* Full Address */}
@@ -381,7 +357,7 @@ export default function ContactPage() {
                         rel="noopener noreferrer"
                         className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-6 rounded-xl bg-[#962228] hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-md shadow-[#962228]/20 group cursor-pointer"
                       >
-                        <span>Get Directions in Google Maps</span>
+                        <span>{t.contact.getDirections}</span>
                         <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                       </a>
                     </div>
@@ -390,7 +366,7 @@ export default function ContactPage() {
                   {/* Right Column: Embedded Interactive Map (OpenStreetMap) */}
                   <div className="lg:col-span-7 relative w-full h-[360px] lg:h-auto min-h-[380px] bg-slate-200">
                     <iframe
-                      title={`Map for ${currentLocation.officeName}`}
+                      title={`Map for ${currentOfficeName}`}
                       src={currentLocation.embedMapUrl}
                       className="w-full h-full border-0 opacity-90 hover:opacity-100 transition-opacity duration-300"
                       allowFullScreen={false}
@@ -412,19 +388,19 @@ export default function ContactPage() {
             <AnimateOnScroll direction="up" className="mb-14 text-center max-w-2xl mx-auto">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#962228]/10 border border-[#962228]/20 text-xs font-bold uppercase tracking-widest text-[#962228] mb-3 font-outfit">
                 <UserCheck className="w-3.5 h-3.5" />
-                <span>Executive Leadership</span>
+                <span>{t.contact.execBadge}</span>
               </div>
               <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight font-plus-jakarta mb-3">
-                Management Contacts
+                {t.contact.execTitle}
               </h2>
               <p className="text-slate-600 text-sm sm:text-base font-normal">
-                Direct access to ESC managing directors for enterprise partnerships, executive consulting, and global utility transformation projects.
+                {t.contact.execSubtitle}
               </p>
             </AnimateOnScroll>
 
             {/* Wide Stacked Executive Cards Container */}
             <div className="space-y-12 max-w-5xl mx-auto">
-              {MANAGING_DIRECTORS.map((director, idx) => (
+              {managingDirectors.map((director, idx) => (
                 <motion.div
                   key={director.name}
                   initial={{ opacity: 0, y: 25 }}
@@ -437,58 +413,30 @@ export default function ContactPage() {
                     
                     {/* Left: Extra Wide Executive Portrait */}
                     <div className="md:col-span-7 flex justify-center">
-                      <div className="relative w-full max-w-[560px] h-72 sm:h-80 lg:h-96 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-[#fafafa] flex-shrink-0 flex items-center justify-center p-1">
+                      <div className="relative w-full max-w-[560px] h-72 sm:h-80 lg:h-96 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-[#fafafa] flex-shrink-0">
                         <Image
                           src={director.photo}
                           alt={director.name}
                           fill
-                          className="object-contain hover:scale-105 transition-transform duration-500"
+                          unoptimized
+                          className={`object-cover ${director.objectPosition} hover:scale-105 transition-transform duration-500`}
                           sizes="(max-width: 768px) 100vw, 560px"
                           priority={idx === 0}
                         />
                       </div>
                     </div>
 
-                    {/* Right: Executive Details & Aligned Tel / Mobil / Email List (Matching Reference Image) */}
+                    {/* Right: Executive Details & Aligned Tel / Mobil / Email List */}
                     <div className="md:col-span-5 flex flex-col justify-center text-left space-y-4">
-                      {/* Name */}
                       <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-800 font-plus-jakarta tracking-tight">
                         {director.name}
                       </h3>
 
-                      {/* Role / Designation */}
                       <p className="text-base sm:text-lg text-slate-500 font-medium font-outfit pb-2">
-                        {director.role === 'Managing Director' ? 'Managing Director' : 'Chairman and Director'}
+                        {director.role}
                       </p>
 
-                      {/* Aligned Contact Info List (Tel, Mobil, Email) */}
-                      <div className="space-y-2 text-sm sm:text-base font-normal text-slate-600 font-mono pt-1 border-t border-slate-100">
-                        {director.tel && (
-                          <div className="flex items-center gap-3">
-                            <span className="w-14 text-slate-500 font-sans">Tel</span>
-                            <span className="text-slate-400">:</span>
-                            <a
-                              href={`tel:${director.tel.replace(/[^0-9+]/g, '')}`}
-                              className="text-slate-800 hover:text-[#962228] transition-colors"
-                            >
-                              {director.tel}
-                            </a>
-                          </div>
-                        )}
-
-                        {director.mobile && (
-                          <div className="flex items-center gap-3">
-                            <span className="w-14 text-slate-500 font-sans">Mobil</span>
-                            <span className="text-slate-400">:</span>
-                            <a
-                              href={`tel:${director.mobile.replace(/[^0-9+]/g, '')}`}
-                              className="text-slate-800 hover:text-[#962228] transition-colors"
-                            >
-                              {director.mobile}
-                            </a>
-                          </div>
-                        )}
-
+                      <div className="space-y-2 text-sm sm:text-base font-normal text-slate-600 font-mono pt-3 border-t border-slate-100">
                         <div className="flex items-center gap-3">
                           <span className="w-14 text-slate-500 font-sans">Email</span>
                           <span className="text-slate-400">:</span>
@@ -511,7 +459,7 @@ export default function ContactPage() {
         </section>
 
         {/* ========================================================================= */}
-        {/* 5. INQUIRY FORM (Silverish Glassmorphic Card) */}
+        {/* 5. INQUIRY FORM */}
         {/* ========================================================================= */}
         <section className="py-24 bg-gradient-to-b from-[#f1f5f9] to-[#cbd5e1] relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -519,13 +467,13 @@ export default function ContactPage() {
               <AnimateOnScroll direction="up" className="mb-10 text-center">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#962228]/10 border border-[#962228]/20 text-xs font-bold uppercase tracking-widest text-[#962228] mb-3 font-outfit">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Send a Direct Message</span>
+                  <span>{t.contact.formBadge}</span>
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 font-plus-jakarta mb-2">
-                  How Can We Support You?
+                  {t.contact.formTitle}
                 </h2>
                 <p className="text-slate-600 text-sm font-normal">
-                  Fill in your details below and an ESC expert will reach out within 1 business day.
+                  {t.contact.formSubtitle}
                 </p>
               </AnimateOnScroll>
 
@@ -539,16 +487,16 @@ export default function ContactPage() {
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 font-plus-jakarta mb-2">
-                    Message Sent Successfully
+                    {t.contact.formSuccessTitle}
                   </h3>
                   <p className="text-slate-600 text-sm max-w-sm leading-relaxed mb-8">
-                    Thank you for contacting ESC Utility Services. Our technical consulting team will review your inquiry and get back to you shortly.
+                    {t.contact.formSuccessDesc}
                   </p>
                   <button
                     onClick={resetForm}
                     className="px-6 py-2.5 rounded-full bg-slate-900 text-white text-xs font-bold uppercase tracking-wider hover:bg-[#962228] transition-colors cursor-pointer"
                   >
-                    Send Another Message
+                    {t.contact.formSendAnother}
                   </button>
                 </motion.div>
               ) : (
@@ -557,7 +505,7 @@ export default function ContactPage() {
                     {/* Full Name */}
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-widest text-slate-600 mb-2 font-outfit">
-                        Full Name *
+                        {t.contact.formName}
                       </label>
                       <input
                         type="text"
@@ -565,7 +513,7 @@ export default function ContactPage() {
                         required
                         value={formData.name}
                         onChange={handleInputChange}
-                        placeholder="John Smith"
+                        placeholder={language === 'DE' ? 'Max Mustermann' : 'John Smith'}
                         className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#962228] focus:bg-white transition-colors"
                       />
                     </div>
@@ -573,7 +521,7 @@ export default function ContactPage() {
                     {/* Work Email */}
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-widest text-slate-600 mb-2 font-outfit">
-                        Work Email *
+                        {t.contact.formEmail}
                       </label>
                       <input
                         type="email"
@@ -591,14 +539,14 @@ export default function ContactPage() {
                     {/* Company */}
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-widest text-slate-600 mb-2 font-outfit">
-                        Organization / Utility Company
+                        {t.contact.formCompany}
                       </label>
                       <input
                         type="text"
                         name="company"
                         value={formData.company}
                         onChange={handleInputChange}
-                        placeholder="Your company name"
+                        placeholder={language === 'DE' ? 'Ihr Unternehmen' : 'Your company name'}
                         className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#962228] focus:bg-white transition-colors"
                       />
                     </div>
@@ -606,7 +554,7 @@ export default function ContactPage() {
                     {/* Service Selection */}
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-widest text-slate-600 mb-2 font-outfit">
-                        Area of Interest
+                        {t.contact.formArea}
                       </label>
                       <select
                         name="service"
@@ -614,13 +562,13 @@ export default function ContactPage() {
                         onChange={handleInputChange}
                         className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 focus:outline-none focus:border-[#962228] focus:bg-white transition-colors"
                       >
-                        <option value="">Select a capability area</option>
-                        <option value="software">Software Engineering &amp; SCADA</option>
-                        <option value="ai">Generative AI &amp; Machine Learning</option>
-                        <option value="automation">Intelligent Process Automation</option>
-                        <option value="backoffice">IT &amp; Grid Back-Office Services</option>
-                        <option value="market">Utility Market Research &amp; Consulting</option>
-                        <option value="other">General Partnership Inquiry</option>
+                        <option value="">{t.contact.formAreaSelect}</option>
+                        <option value="software">{language === 'DE' ? 'Software-Engineering & SCADA' : 'Software Engineering & SCADA'}</option>
+                        <option value="ai">{language === 'DE' ? 'Generative KI & Machine Learning' : 'Generative AI & Machine Learning'}</option>
+                        <option value="automation">{language === 'DE' ? 'Intelligente Prozessautomatisierung' : 'Intelligent Process Automation'}</option>
+                        <option value="backoffice">{language === 'DE' ? 'IT- & Grid-Backoffice-Services' : 'IT & Grid Back-Office Services'}</option>
+                        <option value="market">{language === 'DE' ? 'Marktforschung & Beratung' : 'Utility Market Research & Consulting'}</option>
+                        <option value="other">{language === 'DE' ? 'Allgemeine Kooperationsanfrage' : 'General Partnership Inquiry'}</option>
                       </select>
                     </div>
                   </div>
@@ -628,7 +576,7 @@ export default function ContactPage() {
                   {/* Message */}
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest text-slate-600 mb-2 font-outfit">
-                      Your Message *
+                      {t.contact.formMessage}
                     </label>
                     <textarea
                       name="message"
@@ -636,7 +584,7 @@ export default function ContactPage() {
                       rows={5}
                       value={formData.message}
                       onChange={handleInputChange}
-                      placeholder="Tell us about your project requirements or challenges..."
+                      placeholder={t.contact.formMessagePlaceholder}
                       className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#962228] focus:bg-white transition-colors resize-none"
                     />
                   </div>
@@ -648,17 +596,17 @@ export default function ContactPage() {
                     className="w-full py-4 rounded-xl bg-[#962228] hover:bg-red-700 text-white font-bold text-sm uppercase tracking-wider transition-all duration-300 shadow-lg shadow-[#962228]/25 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
                   >
                     {loading ? (
-                      <span>Sending Message...</span>
+                      <span>{t.contact.formSubmitting}</span>
                     ) : (
                       <>
-                        <span>Submit Inquiry</span>
+                        <span>{t.contact.formSubmit}</span>
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
                   </button>
 
                   <p className="text-center text-xs text-slate-500">
-                    We treat your privacy with standard data protection protocol under Indian &amp; EU GDPR regulations.
+                    {t.contact.formPrivacy}
                   </p>
                 </form>
               )}
