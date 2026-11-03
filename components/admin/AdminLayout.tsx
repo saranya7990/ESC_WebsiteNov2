@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Newspaper, Briefcase, FileText, LayoutDashboard, LogOut, Globe, Shield } from 'lucide-react'
@@ -7,6 +8,19 @@ import { Newspaper, Briefcase, FileText, LayoutDashboard, LogOut, Globe, Shield 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
+
+  // The public site navbar is fixed on top of every page (including /admin).
+  // Measure it so the admin header sits fully below it instead of underneath.
+  const [navbarHeight, setNavbarHeight] = useState(0)
+  useEffect(() => {
+    const navbar = document.querySelector('header.fixed') as HTMLElement | null
+    if (!navbar) return
+    const update = () => setNavbarHeight(navbar.offsetHeight)
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(navbar)
+    return () => observer.disconnect()
+  }, [])
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' })
@@ -24,7 +38,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans">
       {/* Top Header */}
-      <header className="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky top-0 z-40">
+      <header
+        style={{ top: navbarHeight, marginTop: Math.max(0, navbarHeight - 64) }}
+        className="border-b border-slate-800 bg-slate-900/90 backdrop-blur-md sticky z-40"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-8">
             <Link href="/admin/dashboard" className="flex items-center space-x-3">
