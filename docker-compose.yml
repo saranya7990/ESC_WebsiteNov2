@@ -1,0 +1,21 @@
+services:
+  esc-website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: esc-website
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    env_file:
+      - .env.local
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - DATABASE_PATH=/app/data/dev.db
+      - DATABASE_URL=file:/app/data/dev.db
+    volumes:
+      - ./data:/app/data
+      - ./public/uploads:/app/public/uploads
+

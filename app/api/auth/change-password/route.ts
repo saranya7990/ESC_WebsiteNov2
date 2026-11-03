@@ -16,8 +16,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Current password and new password are required' }, { status: 400 })
     }
 
-    // 6 characters was far too weak for admin/HR CMS accounts (this is how
-    // the seeded accounts ended up with 8- and 5-character passwords).
     if (newPassword.length < 10) {
       return NextResponse.json({ error: 'New password must be at least 10 characters long' }, { status: 400 })
     }
@@ -26,22 +24,24 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'New password must be different from the current password' }, { status: 400 })
     }
 
-    // Fetch user from DB
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { id: currentUser.userId },
     })
+    if (!user && currentUser.email) {
+      user = await prisma.user.findUnique({
+        where: { email: currentUser.email },
+      })
+    }
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    // Verify current password
     const isValid = await bcrypt.compare(currentPassword, user.password)
     if (!isValid) {
       return NextResponse.json({ error: 'Incorrect current password' }, { status: 400 })
     }
 
-    // Hash new password and update in DB
     const hashedNewPassword = await bcrypt.hash(newPassword, 10)
     await prisma.user.update({
       where: { id: user.id },
